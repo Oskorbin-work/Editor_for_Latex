@@ -1,10 +1,10 @@
+import data.XML.work_with_XML as XML
 from PyQt5.QtWidgets import *
 import sys
-
 class Window(QWidget):
     def __init__(self):
         QWidget.__init__(self)
-        self.setWindowTitle("Hello")
+        self.setWindowTitle(XML.get_attr_XML('name-title'))
 
         layout = QGridLayout()
         self.setLayout(layout)
@@ -15,6 +15,6 @@ class Window(QWidget):
 app = QApplication(sys.argv)
 
 screen = Window()
-screen.show()
+screen.showMaximized()
 
 sys.exit(app.exec_())
