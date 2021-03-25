@@ -1,16 +1,10 @@
-from PyQt5 import QtWebEngineWidgets
-
 import data.XML.work_with_XML as XML
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui  import QFont, QIcon
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import  *
 from PyQt5.QtWebEngineWidgets import *
-import qpageview
 import sys
-from PyQt5 import QtCore, QtWidgets, QtWebEngineWidgets
-import os.path
-from os import path
+from PyQt5 import QtWebEngineWidgets
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -50,7 +44,6 @@ class Window(QMainWindow):
 
         v =  QWebEngineView()
         v.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
-        v.load(QUrl("file:///alife.pdf"))
         v.load(QUrl("file:///pdf.js/web/compressed.tracemonkey-pldi-09.pdf"))
         ver_box = QVBoxLayout()
         ver_box.addWidget(v)
