@@ -67,13 +67,6 @@ class Window(QMainWindow):
 
 
 if __name__ == '__main__':
-    ##app = QApplication(sys.argv)
-    ##web = QWebEngineView()
-    ##web.resize(900,500)
-    ##web.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
-    ##web.load(QUrl("file:///alife.pdf"))
-    ##web.load(QUrl('%s?file=%s' % ('file:///pdf.js/web/viewer.html','file:///pdf.js/web/compressed.tracemonkey-pldi-09.pdf')))
-    ##web.show()
     app = QApplication(sys.argv)
     ex = Window()
     sys.exit(app.exec_())
