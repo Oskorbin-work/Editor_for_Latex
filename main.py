@@ -44,7 +44,7 @@ class Window(QMainWindow):
 
         v =  QWebEngineView()
         v.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
-        v.load(QUrl("file:///pdf.js/web/compressed.tracemonkey-pldi-09.pdf"))
+        v.load(QUrl("file:///alife.pdf"))
         ver_box = QVBoxLayout()
         ver_box.addWidget(v)
         ver_box.setContentsMargins(10, 10, 10, 10)
