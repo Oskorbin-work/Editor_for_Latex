@@ -1,5 +1,5 @@
 import data.XML.work_with_XML as XML
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import *
@@ -38,11 +38,16 @@ class Window(QMainWindow):
         saveAction.setShortcut('Ctrl+S')
         saveAction.triggered.connect(self.save_file)
 
+        saveAsAction = QAction('Save as', self)
+        saveAsAction.setShortcut('Alt+S')
+        saveAsAction.triggered.connect(self.save_file_as)
+
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(newAction)
         fileMenu.addAction(openAction)
         fileMenu.addAction(saveAction)
+        fileMenu.addAction(saveAsAction)
         fileMenu.addAction(exitAction)
 
     def osnova(self):
@@ -72,12 +77,21 @@ class Window(QMainWindow):
         self.setCentralWidget(splitter)
 
     def save_file(self):
-        with open('test.tex', 'w', encoding='utf-8') as f:
+        with open(XML.get_osnova_XML('tec-address') + XML.get_osnova_XML('tec-name-file') + ".tex", 'w', encoding='utf-8') as f:
             my_text = self.f_label.toPlainText()
             f.write(my_text)
 
+    def save_file_as(self):
+        file = QtWidgets.QFileDialog.getSaveFileName(self,"Save file as","./","Tex files (*.tex)")
+        if not file:
+             return
+        else:
+            with open(file[0], 'w', encoding='utf-8') as f:
+                my_text = self.f_label.toPlainText()
+                f.write(my_text)
+
     def open_file(self):
-        file, _ = QtWidgets.QFileDialog.getOpenFileNames(self,'Open file','./','Tex files (*.tex)')
+        file, _ = QtWidgets.QFileDialog.getOpenFileNames(self,"Open file","./","Tex files (*.tex)")
         if not file:
              return
         else:
