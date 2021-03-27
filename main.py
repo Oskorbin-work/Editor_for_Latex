@@ -8,6 +8,8 @@ import sys
 import os.path
 import os
 from PyQt5 import QtWebEngineWidgets
+
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -122,6 +124,12 @@ class Window(QMainWindow):
         os.chdir(XML.get_osnova_XML('tec-address') + '/')
         os.system("cmd /c pdflatex " + XML.get_osnova_XML('tec-name-file') + ".tex" )
         self.v.reload()
+
+
+#Разбить на классы. В "Bar" будет строка управления
+class Bar(Window):
+    pass
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
