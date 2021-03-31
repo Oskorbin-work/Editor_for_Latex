@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<data>
+    <!--File buttons-->
+<file-new>Ctrl+N</file-new>
+<file-open>Ctrl+O</file-open>
+<file-save>Ctrl+S</file-save>
+<file-save-as>ALT+S</file-save-as>
+<file-run-latex-to-pdf>Ctrl+R</file-run-latex-to-pdf>
+<file-exit>Ctrl+Q</file-exit>
+<!--Exit XML-->
+</data>
