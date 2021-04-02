@@ -1,5 +1,23 @@
 """
+Примечание:
+-Сделать проверку на docx файл
+
 1) Работа с ворд документами.
+    1.1) Найти нужную таблицу
+    1.2) Анализ каждой ячейки. Для удобства, описывается только первая табличка
+        1.2.1) Каждого слова!
+            1.2.1.1) Стиль (Жирный, обычный, курсив)
+            1.2.1.2) Подчеркивание
+            1.2.1.3) Капсом ли написано
+            1.2.1.4) Цвет шрифта
+            1.2.1.5) Двойное зачеркивание
+            1.2.1.6) Цвет выделения
+            1.2.1.7) Расположение текста:
+Сверху-слева, сверху-центр, сверху-справа, Справа-справа, внизу-справа, внизу-центр, внизу-слева,слева-слева,центе-центр
+            1.2.1.8) Направление текста
+            1.2.1.9) Размер шрифта.
+            1.2.1.10) Нижний индекс и вверхний индекс.
+
 2) Работа с эксель документами.
 3) Получить таблицу.
 4) Понять какой это формат.
@@ -23,18 +41,45 @@ class Generation_latex():
 
     def __init__(self):
         self.doc = ""
+        self.name_address = ""
+        self.name_table = ""
 
-    def search_docx_file(self, name_address): # Search file-docx
-        if os.path.isfile(name_address):
-            self.doc = docx.Document(name_address)
-            self.properties = self.doc.core_properties
-            self.search_docx_tables()
-        else:
-            print("O, no!")
+    def search_docx_file(self, name_address=None, name_table=None):  # Search file-docx
+        #Проверка на то что пользователь не указал данные.
+        if name_address == None: print("Не вказана назва файлу!")
+        if name_table == None: print("Не вказана назва таблиці!")
+        # Чтобы в классе проще работать
+        self.name_address = name_address
+        self.name_table = name_table
+        # Проверяем, что файл вообще существует
+        if os.path.isfile(self.name_address):
+            self.doc = docx.Document(self.name_address)
+            self.properties = self.doc.core_properties #Сами еще не решили зачем это надо
+            self.search_docx_tables() #Запускаем поиск таблицы
+        else: #На случай, если файл не нашелся.
+            print("Файл не знайдено")
 
     def search_docx_tables(self):
-        pass
+        # Позор родины
+        i = 0 #Определеяет номер необходимой таблицы.
+        find_table = False # Маркер нахождения таблицы
+        for tables in self.doc.tables: # Находим таблицу
+            if find_table == True: #Нашли таблицу!
+                break
+            if (tables.rows[0].cells[0].text == self.name_table): #Ищем
+                self.Assembly_shop(i)
+                find_table = True
+            else:
+                i += 1
+        if find_table == False: #Если таблица не нашлась
+            print("Таблиця не знайдена")
+
+    def Assembly_shop(self, number_table): # Сборочный цех. Тут собирается уже latex - таблица
+        name_table = self.doc.tables[number_table]
+        print(name_table.rows[0].cells[0].text)
+        print(self.doc.tables[0].rows[0].cells[0].paragraphs[0].runs[0].bold)
+
 
 if __name__ == '__main__':
     app = Generation_latex()
-    app.search_docx_file('D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx')
+    app.search_docx_file('D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx', "Таблица 1")
