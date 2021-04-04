@@ -18,6 +18,7 @@ from PyQt5 import QtWebEngineWidgets
 import sys # Initiate project into operating system
 from distutils.spawn import find_executable
 
+
 class Error_latex(QMainWindow, Bar):
     def __init__(self):
         super(Error_latex, self).__init__()
@@ -86,7 +87,8 @@ class Main_windows(QMainWindow, Bar):
 
     def main_window_view_pdf(self): # View pdf into main window
         self.main_window_view_pdf_val = QWebEngineView()
-        self.main_window_view_pdf_val.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
+        self.main_window_view_pdf_val.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled,
+                                                              True)
         print("file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".pdf")
         self.main_window_view_pdf_val.load(
             QUrl("file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".pdf"))

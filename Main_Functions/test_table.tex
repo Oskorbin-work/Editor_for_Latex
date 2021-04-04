@@ -1,0 +1,143 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage{array}
+\usepackage{indentfirst}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{longtable}  % Длинные таблицы
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[left=3cm,right=1.5cm,
+top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\makeatletter
+\renewcommand{\thetable}{\thesection.\@arabic\c@table}
+\usepackage{titlesec}
+%\newcommand{\subsectionbreak}{\clearpage}
+\@addtoreset{table}{section}
+\makeatother
+\hypersetup{
+bookmarks=false,    % show bookmarks bar?
+pdftitle={Software Requirement Specification},    % title
+pdfauthor={Полозюк С.В.},                     % author
+pdfsubject={TeX and LaTeX},                        % subject of the document
+pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+colorlinks=true,       % false: boxed links; true: colored links
+linkcolor=black,       % color of internal links
+citecolor=black,       % color of links to bibliography
+filecolor=black,        % color of file links
+urlcolor=black,        % color of external links
+linktoc=page            % only page is linked
+}%
+\usepackage{graphicx}  % Для вставки рисунков
+\graphicspath{{img/}}  % папки с картинками
+\newcommand{\El}{Eldorin}
+\newcommand{\Versia}{1.0.0.}
+\newcommand{\Authorgod}{Полозюк С.В.}
+\usepackage{cmap}					% поиск в PDF
+\usepackage{mathtext} 				% русские буквы в фомулах
+\usepackage[T2A]{fontenc}			% кодировка
+\usepackage[utf8]{inputenc}			% кодировка исходного текста
+\usepackage[english,russian]{babel}	% локализация и переносы
+\date{}
+\usepackage{hyperref}
+\begin{document}
+\begin{center}
+Міністерство освіти і науки України
+
+Харківський національний економічний університет ім. С. Кузнеця
+
+Кафедра інформаційних систем
+
+
+
+
+\vspace{4cm}
+
+
+
+
+Звіт
+
+з лабораторної роботи №5
+
+з дисципліни «Технології тестування ПЗ»
+
+на тему: «Розробка плану тестування
+»
+\end{center}
+\vspace{4cm}
+\begin{flushright}
+
+\begin{minipage}{.45\textwidth}
+Виконав:
+
+студент 4-го курсу групи 6.04.122.012.17.1
+
+факультету інформаційних технологій
+
+Полозюк С.В.
+
+Перевірив:
+
+д.т.н., доц. Скорін Ю.І.
+\end{minipage}
+\end{flushright}
+\vspace{8cm}
+\begin{center}
+М. Харків
+
+2020
+\end{center}
+
+\newpage
+\textbf{Программа "\El"\\}
+
+\textbf{Test plan}
+\vspace{2cm}
+
+Версия 1.0
+\vspace{2cm}
+
+История изменений
+
+\begin{center}
+\begin{tabular}{|p{0.2\textwidth}|p{0.1\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}|}
+\hline
+\rowcolor[gray]{.9} \textbf{Дата} & \textbf{Версия} & \textbf{Описание} & \textbf{Автор} \\
+\hline
+19.03.2021& 1.0 & Документ создан в первой редакции & Студент \Authorgod \\
+\hline
+\end{tabular}
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+\section{Введение}
+\begin{longtable}{|c|c|}
+    \multicolumn{2}{r}{Продовження на наступній сторінці\ldots}\\
+    \endfoot
+    \hline
+    \endlastfoot
+    \hline
+        5&4
+\end{longtable}
+\begin{longtable}{|c|c|}
+    \multicolumn{2}{r}{Продовження на наступній сторінці\ldots}\\
+    \endfoot
+    \hline
+    \endlastfoot
+    \hline
+        5&4
+\end{longtable}
+
+\section{Свойства, которые не должны тестироваться}
+\begin{longtable}{|c|c|}
+    \multicolumn{2}{r}{Продовження на наступній сторінці\ldots}\\
+    \endfoot
+    \hline
+    \endlastfoot
+    \hline
+        5&4
+\end{longtable}
+
+\end{document}
