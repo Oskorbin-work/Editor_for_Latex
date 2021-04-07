@@ -50,20 +50,23 @@
 14) Конвертация латеха в пдф.
 15) Решаем баги, что могут быть. Надеюсь, их не будет.
 """
+
 import os
 import docx
 import re
-import sys
 
 
-class Generation_latex_excel():
+class Generation_latex_excel:
     pass
 
-class Generation_latex_word():
+
+class Generation_latex_word:
     def search_docx_file(self, name_address=None, name_table=None):  # Search file-docx
         # Проверка на то что пользователь не указал данные.
-        if name_address == None: return "Не вказана назва файлу!"
-        if name_table == None: return "Не вказана назва таблиці!"
+        if name_address == None:
+            return ("Не вказана назва файлу!")
+        if name_table == None:
+            return "Не вказана назва таблиці!"
         # Чтобы в классе проще работать
         self.name_address = name_address
         self.name_table = name_table
@@ -89,7 +92,8 @@ class Generation_latex_word():
         if find_table == False:  # Если таблица не нашлась
             return "Таблиця не знайдена"
 
-class Generation_latex(Generation_latex_word,Generation_latex_excel):
+
+class Generation_latex(Generation_latex_word, Generation_latex_excel):
 
     def __init__(self):
         self.doc = ""
@@ -98,106 +102,107 @@ class Generation_latex(Generation_latex_word,Generation_latex_excel):
         self.list_start_file = list()
         self.list_new_table = list()
 
-    def merge_cells(self, c):
-       pass
-       #self.test_list_1 = list()
+    def merge_cells_word(self, row, column):  #
+        return str(self.name_table.cell(row, column)._tc.top) + str(self.name_table.cell(row, column)._tc.bottom) + \
+               str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
 
-        #self.test_list_2 = list()
-
+    def multicolumn_word(self):
+        pass
     def every_row(self):
         c = self.name_table.cell(0, 1)
-        print(str(c._tc.top)+ str(c._tc.bottom)+ str(c._tc.left)+ str(c._tc.right))
-        for i in range(len(self.name_table.rows)):
-            if i == 0:
-                pass
+        # print(str(c._tc.top)+ str(c._tc.bottom)+ str(c._tc.left)+ str(c._tc.right))
+        for row in range(len(self.name_table.rows)):
+            if row == 0: pass
             else:
-                string = self.name_table.cell(i,0).text
-                for j in range(len(self.name_table.columns)):
-                        self.merge_cells(self.name_table.cell(i,j).text)
-                        f = -1
-                        k = j
-                        while k < len(self.name_table.columns):
-                            r_1 = str(self.name_table.cell(i, j) ._tc.top)+ str(self.name_table.cell(i, j) ._tc.bottom)+ str(self.name_table.cell(i, j) ._tc.left)+ str(self.name_table.cell(i, j) ._tc.right)
-                            r_2 = str(self.name_table.cell(i, k) ._tc.top)+ str(self.name_table.cell(i, k) ._tc.bottom)+ str(self.name_table.cell(i, k) ._tc.left)+ str(self.name_table.cell(i, k) ._tc.right)
-                            print(f)
-                            if r_1 == r_2:
-                                f=f+1
-                                k+=1
-                            else:
-                                break
-                        if(f==0):
-                            string = string+"&" + self.name_table.cell(i,j).text
+                string = ''
+                column = 0
+                while column < len(self.name_table.columns):
+                    f = 1
+                    k=0
+                    while (k+column)<(len(self.name_table.columns)-1):
+                        if self.merge_cells_word(row, k + column) == self.merge_cells_word(row, k + column + 1):
+                            if row == 3: print(str(k+column) + " " + str(f))
+                            f+=1
                         else:
-                            string = string+"&" + "\\multirow{" +str(f)+"}{c}{"+ self.name_table.cell(i,j).text + "}"
+                            break
+                        k+=1
+                #if row == 3: print(str(column) + " " + str(f))
+                    if ((column+f) == len(self.name_table.columns) ):
+                                string += "\\multicolumn{" + str(f) + "}{c|}{" + \
+                                          self.name_table.cell(row,column).text + "}"
+                    elif(column == 0):
+                            string += "\\multicolumn{" + str(f) + "}{|c|}{" + \
+                                      self.name_table.cell(row,column).text + "}" + "&"
+                    else:
+                            string += "\\multicolumn{" + str(f) + "}{c|}{" + self.name_table.cell(row,
+                                                                                                   column).text + "}" + "&"
+
+                    column = column+f
+                    #string = string + "&" + "\\multicolumn{" + str(f) + "}{|c|}{" + self.name_table.cell(row,
+                    #column).text + "}"
+                        # else:
+
 
                 self.list_new_table.append(string + "\\\\")
                 self.list_new_table.append(" \\hline")
-        #print("1)")
-        #print(self.name_table.row_cells(5))
-        #print("2)")
-        #print(self.name_table.row_cells(1))
-        #print("3)")
-        #print(self.name_table.row_cells(2))
 
-
-    def Assembly_shop(self, number_table): # Сборочный цех. Тут собирается уже latex - таблица
-        self.name_table = self.doc.tables[number_table]
-        self.list_new_table.append("\\begin{longtable}"  + "{|" + "c|"*len(self.name_table.columns) +"}")
-        self.list_new_table.append("    \\multicolumn{"+ str(len(self.name_table.columns)) +"}{r}{Продовження на наступній сторінці\\ldots}\\\\")
+    def first_part_table(self):  #
+        self.list_new_table.append("\\begin{longtable}" + "{" + "c" * len(self.name_table.columns) + "}")
+        self.list_new_table.append("    \\multicolumn{" + str(
+            len(self.name_table.columns)) + "}{r}{Продовження на наступній сторінці\\ldots}\\\\")
         self.list_new_table.append("    \\endfoot")
         self.list_new_table.append("    \\endlastfoot")
         self.list_new_table.append("    \\hline")
+
+    def Assembly_shop(self, number_table):  # Сборочный цех. Тут собирается уже latex - таблица
+        self.name_table = self.doc.tables[number_table]
+        self.first_part_table()
         self.every_row()
         self.list_new_table.append("\\end{longtable}")
         return self.list_new_table
-        #return name_table.rows[0].cells[0].text
-        #print(self.doc.tables[0].rows[0].cells[0].paragraphs[0].runs[0].bold)
+        # return name_table.rows[0].cells[0].text
+        # print(self.doc.tables[0].rows[0].cells[0].paragraphs[0].runs[0].bold)
 
-    def find_parameter_to_command_to_latex_file(self, structure_command): # разбивает команду на параметры
+    def find_parameter_to_command_to_latex_file(self, structure_command):  # разбивает команду на параметры
         # Баг: Что если параметров будет не правильное количество?
         # №1 параметр. Адрес ворда
         # Баг: Если в название папки или файла будет запятая, то это сломает абсолютно все. Исправить бы
         name_address = re.search(r'(?<=\{)([\s\S]+?)(?=\,)', structure_command)
-        #print(name_address.group(0))
         # №2 параметр. Имя таблицы
         name_table = re.search(r'(?<=\,)([\s\S]+?)(?=\})', structure_command)
-        #print(name_table.group(0))
-        #Определяет формат текущего документа для дальнейшего распределения документа по классу: Ексель или Ворд.
-        name_address_data=re.search(r'[^.]+$', name_address.group(0))
+        # Определяет формат текущего документа для дальнейшего распределения документа по классу: Ексель или Ворд.
+        name_address_data = re.search(r'[^.]+$', name_address.group(0))
         if name_address_data.group(0) == "docx":
-            return self.search_docx_file(name_address.group(0),name_table.group(0))
+            return self.search_docx_file(name_address.group(0), name_table.group(0))
         elif name_address_data.group(0) == "xlsx":
-            pass # реализация обработки xls-документов
+            pass  # реализация обработки xls-документов
         else:
             return "Формат документа може бути тільки docx чи xls"
 
-    def find_command_to_latex_file(self,name_address_tex_file): # Поиск команды.
+    def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
         if os.path.isfile(name_address_tex_file):
-            with open(name_address_tex_file, 'r+',encoding='utf-8') as file:
+            with open(name_address_tex_file, 'r+', encoding='utf-8') as file:
                 for line in file:
                     if (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) is None:
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.append(line)
-                        #print(line)
+                        # print(line)
                     else:
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
-                        self.list_start_file.extend (self.find_parameter_to_command_to_latex_file(line))
-                        #print(self.list_start_file[-1])
-                        #print(line)
+                        self.list_start_file.extend(self.find_parameter_to_command_to_latex_file(line))
+                        # print(self.list_start_file[-1])
+                        # print(line)
                         self.list_new_table.clear()
             MyFile = open('test_table.tex', 'w')
             self.list_start_file = map(lambda x: x + '\n', self.list_start_file)
             MyFile.writelines(self.list_start_file)
             MyFile.close()
-                        #line = "%Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 3}"
-            #print('\n'.join(self.list_start_file))
+            # line = "%Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 3}"
+            # print('\n'.join(self.list_start_file))
         else:
             print("Файлу нема!")
-
 
 
 if __name__ == '__main__':
     app = Generation_latex()
     app.find_command_to_latex_file('test.tex')
-
-    #app.search_docx_file('D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx', "Таблица 1")

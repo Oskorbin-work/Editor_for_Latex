@@ -43,21 +43,46 @@ linktoc=page            % only page is linked
 \begin{document}
 
 \section{Введение}
-\begin{longtable}{|c|c|c|c|c|}
+\begin{longtable}{ccccc}
     \multicolumn{5}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
     \hline
-2&\multirow{3}{c}{2}&\multirow{2}{c}{2}&\multirow{1}{c}{2}&2&3\\
+\multicolumn{3}{|c|}{2}&\multicolumn{2}{c|}{3}\\
  \hline
-4&4&6&8&9&10\\
+\multicolumn{1}{|c|}{4}&\multicolumn{1}{c|}{5}&\multicolumn{1}{c|}{6}&\multicolumn{1}{c|}{7}&\multicolumn{1}{c|}{8}\\
  \hline
-11&11&12&13&14&15\\
+\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12 13}\\
+ \hline
+\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+13}\\
+ \hline
+\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+13}\\
+ \hline
+\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+13}\\
  \hline
 \end{longtable}
-%+Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 2}
+\begin{longtable}{cc}
+    \multicolumn{2}{r}{Продовження на наступній сторінці\ldots}\\
+    \endfoot
+    \endlastfoot
+    \hline
+\multicolumn{1}{|c|}{1}&\multicolumn{1}{c|}{2}\\
+ \hline
+\multicolumn{1}{|c|}{3}&\multicolumn{1}{c|}{4}\\
+ \hline
+\end{longtable}
 
 \section{Свойства, которые не должны тестироваться}
-%+Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 3}
+\begin{longtable}{ccccc}
+    \multicolumn{5}{r}{Продовження на наступній сторінці\ldots}\\
+    \endfoot
+    \endlastfoot
+    \hline
+\multicolumn{1}{|c|}{6}&\multicolumn{1}{c|}{7}&\multicolumn{1}{c|}{8}&\multicolumn{1}{c|}{9}&\multicolumn{1}{c|}{10}\\
+ \hline
+\end{longtable}
 
 \end{document}
