@@ -5,6 +5,8 @@
 \usepackage{indentfirst}
 \usepackage[bookmarks=true]{hyperref}
 \usepackage{longtable}  % Длинные таблицы
+\usepackage{multirow}
+\usepackage{hhline}
 \usepackage{color}
 \usepackage{colortbl}
 \usepackage[left=3cm,right=1.5cm,
@@ -43,46 +45,55 @@ linktoc=page            % only page is linked
 \begin{document}
 
 \section{Введение}
-\begin{longtable}{ccccc}
+\begin{longtable}{|c|c|c|c|c|}
     \multicolumn{5}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
     \hline
 \multicolumn{3}{|c|}{2}&\multicolumn{2}{c|}{3}\\
- \hline
+\hhline{-----}
 \multicolumn{1}{|c|}{4}&\multicolumn{1}{c|}{5}&\multicolumn{1}{c|}{6}&\multicolumn{1}{c|}{7}&\multicolumn{1}{c|}{8}\\
- \hline
-\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12 13}\\
- \hline
-\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+\hhline{-----}
+\multirow{4}{*}{9
+9
+9
+9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12 13}\\
+\hhline{|~|----}
+\multicolumn{1}{|c}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
 13}\\
- \hline
-\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+\hhline{|~|----}
+\multicolumn{1}{|c}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
 13}\\
- \hline
-\multicolumn{1}{|c|}{9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+\hhline{|~|----}
+\multicolumn{1}{|c}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
 13}\\
- \hline
+\hhline{-----}
 \end{longtable}
-\begin{longtable}{cc}
-    \multicolumn{2}{r}{Продовження на наступній сторінці\ldots}\\
+\begin{longtable}{|c|c|c|c|c|c|c|}
+    \multicolumn{7}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{1}{|c|}{1}&\multicolumn{1}{c|}{2}\\
- \hline
-\multicolumn{1}{|c|}{3}&\multicolumn{1}{c|}{4}\\
- \hline
+\multicolumn{2}{|c|}{\multirow{3}{*}{1}}&\multicolumn{3}{c|}{2}&\multicolumn{2}{c|}{\multirow{2}{*}{3}}\\
+\hhline{|~||~|---|~||~|}
+\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{4}&\multicolumn{1}{c|}{5}&\multicolumn{1}{c|}{6}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
+\hhline{|~||~|-----}
+\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multirow{3}{*}{17}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{---|~|---}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{13}&\multicolumn{1}{c|}{15}&\multicolumn{1}{c|}{}\\
+\hhline{---|~|---}
+\multicolumn{1}{|c|}{14}&\multicolumn{1}{c|}{15}&\multicolumn{1}{c|}{16}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{18}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{-------}
 \end{longtable}
 
 \section{Свойства, которые не должны тестироваться}
-\begin{longtable}{ccccc}
+\begin{longtable}{|c|c|c|c|c|}
     \multicolumn{5}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
     \hline
 \multicolumn{1}{|c|}{6}&\multicolumn{1}{c|}{7}&\multicolumn{1}{c|}{8}&\multicolumn{1}{c|}{9}&\multicolumn{1}{c|}{10}\\
- \hline
+\hhline{-----}
 \end{longtable}
 
 \end{document}
