@@ -26,7 +26,6 @@
         1.2.1) Каждого слова!
             1.2.1.1) Стиль (Жирный, обычный, курсив)
             1.2.1.2) Подчеркивание
-            1.2.1.3) Капсом ли написано
             1.2.1.4) Цвет шрифта
             1.2.1.5) Двойное зачеркивание
             1.2.1.6) Цвет выделения
@@ -36,10 +35,8 @@
             1.2.1.9) Размер шрифта.
             1.2.1.10) Нижний индекс и вверхний индекс.
 2) Работа с эксель документами.
-3) Получить таблицу. 
-4) Понять какой это формат.
-5) Если это CSV, то попытаться его отобразить через встроеннный в латехе плюшку.
-6) Если же нет, то думать как его превратить в CSV или же в другой поддерживаемый формат латех. Делать 5 пункт.
+3) Получить таблицу. +
+4) Понять какой это формат.+
 7) Разработка команды, через которую можно обратиться к ворду/екселю. Функция будет прописываться в латех-файле. +
 8) Научиться искать эту команду в латех-файле.+
 9) Получать таблицу по этой команде.+
@@ -48,7 +45,7 @@
 12) В копии заменить эту команду на команду, что умеет преобразывать CSV в таблицу латеха.
 13) И так делать пока не закончятся команды.
 14) Конвертация латеха в пдф.
-15) Решаем баги, что могут быть. Надеюсь, их не будет.
+15) Решаем баги, что могут быть. Надеюсь, их не будет. +/-
 """
 
 import os
@@ -79,7 +76,6 @@ class Generation_latex_word:
             return "Файл не знайдено"
 
     def search_docx_tables(self):
-        # Позор родины
         i = 0  # Определеяет номер необходимой таблицы.
         find_table = False  # Маркер нахождения таблицы
         for tables in self.doc.tables:  # Находим таблицу
@@ -92,6 +88,134 @@ class Generation_latex_word:
         if find_table == False:  # Если таблица не нашлась
             return "Таблиця не знайдена"
 
+    def every_row(self):
+        map_table = [[0] * len(self.name_table.columns) for i in range(len(self.name_table.rows))]
+        for row in range(len(self.name_table.rows)):
+            if row == 0: pass
+            else:
+                string = ''
+                column = 0
+                map_table_hline = [""] * len(self.name_table.columns)
+                while column < len(self.name_table.columns):
+
+                    f = 1
+                    c = 0
+                    if column == 0:
+                        border_left = "|"
+                    else:
+                        border_left = ""
+                    border_right = ""
+                    if (map_table[row][column] == 0):
+                        k = 0
+
+                        #print(str(row + 1) + " " + str(column+1))
+                        self.merge_cells_word(row,column)
+                        if row < (len(self.name_table.rows) - 1) and column < (len(self.name_table.columns) - 1)\
+                                and self.merge_cells_word(row,column) == self.merge_cells_word(row + 1, column)\
+                                and self.merge_cells_word(row,column) == self.merge_cells_word(row, column+1):
+                            #----------------------
+                            while (k + column) < (len(self.name_table.columns) - 1):
+                                if self.merge_cells_word(row, k + column) == self.merge_cells_word(row,k + column + 1):
+                                    f += 1
+                                else:
+                                    break
+                                k += 1
+                            border_right = "|"
+                            map_table_hline[column+f-1] = "|"
+                            string += "\\multicolumn{" + str(f) +"}{" + border_left + "c" + border_right +"}{"
+                            c += 1
+                            row_merge = 1
+                            while (row_merge + row) < len(self.name_table.rows):
+                                if self.merge_cells_word(row, column) == self.merge_cells_word(row_merge + row, column):
+                                    k = 0
+                                    while (k + column) < (column+f-1):
+                                        map_table[row_merge + row][k + column] = 1
+                                        k += 1
+                                    map_table[row_merge + row][k + column] = 2 # Last column to merge_cell
+                                    c += 1
+                                else:
+                                    break
+                                row_merge += 1
+                            if (column+f == len(self.name_table.columns)):
+                                string += "\multirow{" + str(c) + "}{*}{" + self.return_cells(row, column) + "}}"
+                            else:
+                                string += "\multirow{" + str(c) + "}{*}{" + self.return_cells(row, column) + "}}" + "&"
+                            #-----------------------
+                        elif row < (len(self.name_table.rows) - 1) \
+                                and self.merge_cells_word(row,column) == \
+                                self.merge_cells_word(row + 1, column):
+                            map_table[row][column] = 1
+                            map_table[row + 1][column] = 1
+                            c += 1
+                            row_merge = 1
+                            border_right = "|"
+                            map_table_hline[column + f-1] = "|"
+                            string += "\\multicolumn{" + str(1) + "}{" + border_left + "c" + border_right + "}{"
+                            while row_merge + row < len(self.name_table.rows):
+                                if self.merge_cells_word(row, column) == self.merge_cells_word(row_merge + row, column):
+                                    map_table[row_merge + row][column] = 1
+                                    c += 1
+                                else:
+                                    break
+                                row_merge += 1
+                                map_table_hline[column+f-1] = "|"
+                            if ((column + f) == len(self.name_table.columns)):
+                                string += "\\multirow{" + str(c) + "}{*}{" + \
+                                          self.return_cells(row,column) + "}}"
+                            elif (column == 0):
+                                string += "\\multirow{" + str(c) + "}{*}{" + \
+                                          self.return_cells(row,column) + "}}" + "&"
+                            else:
+                                string += "\\multirow{" + str(c) + "}{*}{" + self.return_cells(row,column) + "}}" + "&"
+                        else:
+                            while (k + column) < (len(self.name_table.columns) - 1):
+                                if self.merge_cells_word(row, k + column) == self.merge_cells_word(row,
+                                                                                                   k + column + 1):
+                                    f += 1
+                                else:
+                                    break
+                                k += 1
+                            #|-----------|
+                            #|           |
+                            #|-----------|
+                            if column + f == len(self.name_table.columns): # Last cell in row
+                                ampersand = ""
+                            else:
+                                ampersand = "&"
+                            border_right = "|"
+                            map_table_hline[column + f-1] = "|"
+                            string += "\\multicolumn{" + str(f) + "}{"+ border_left +"c" + border_right+"}{" + \
+                                          self.return_cells(row,column) + "}" + ampersand
+                    else:
+                        # map-table == 1
+                        if column + f == len(self.name_table.columns):  # Last cell in row
+                            ampersand = ""
+                        else:
+                            ampersand = "&"
+                        if column + f == len(self.name_table.columns):  # Last cell in row
+                            border_right = "|"
+                            map_table_hline[column + f-1] = "|"
+                        elif column + f != len(self.name_table.columns) and self.merge_cells_word(row,column) != self.merge_cells_word(row,column+1):
+                            border_right = "|"
+                            map_table_hline[column + f-1] = "|"
+                        string += "\\multicolumn{" + str(f) + "}{" + border_left + "c" + border_right + "}{" + "}" + ampersand
+                    column = column + f
+                self.list_new_table.append(string + "\\\\")
+                hhline = "\\hhline{"
+                for column_hline in range(len(self.name_table.columns)):
+                    print(map_table_hline)
+                    if row == (len(self.name_table.rows) - 1):
+                        hhline += "-"
+                    elif map_table[row+1][column_hline] == 0:
+                        hhline += "-"
+                    elif column_hline == 0:
+                        hhline += "|~" + map_table_hline[column_hline]
+                    else:
+                        hhline += "~" + map_table_hline[column_hline]
+                hhline += "}"
+                self.list_new_table.append(hhline)
+
+
 
 class Generation_latex(Generation_latex_word, Generation_latex_excel):
 
@@ -103,132 +227,22 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
         self.list_new_table = list()
 
     def merge_cells_word(self, row, column):  #
-        return str(self.name_table.cell(row, column)._tc.top) + str(self.name_table.cell(row, column)._tc.bottom) + \
+        try:
+            return str(self.name_table.cell(row, column)._tc.top) + str(self.name_table.cell(row, column)._tc.bottom) + \
+                   str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
+        except Exception:
+            return str(self.name_table.cell(row, column)._tc.top) + "0707" + \
                str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
 
     def return_cells(self,row,column):
-        return self.name_table.cell(row,column).text
+       # return self.name_table.cell(row,column).text
+       return  self.merge_cells_word(row,column)
 
-    def every_row(self):
-        map_table = [[0] * len(self.name_table.columns) for i in range(len(self.name_table.rows))]
-        for row in range(len(self.name_table.rows)):
-            if row == 0: pass
-            else:
-                string = ''
-                column = 0
-                while column < len(self.name_table.columns):
-                    f = 1
-                    c = 0
-                    border_left = ""
-                    border_right = ""
-                    if (map_table[row][column] == 0):
-                        k = 0
-                        if row < (len(self.name_table.rows) - 1) and column < (len(self.name_table.columns) - 1)\
-                                and self.merge_cells_word(row,column) == self.merge_cells_word(row + 1, column)\
-                                and self.merge_cells_word(row,column) == self.merge_cells_word(row, column+1):
-                            #----------------------
-                            while (k + column) < (len(self.name_table.columns) - 1):
-                                if self.merge_cells_word(row, k + column) == self.merge_cells_word(row,k + column + 1):
-                                    f += 1
-                                else:
-                                    break
-                                k += 1
-                            if (column == 0):
-                                string += "\\multicolumn{" + str(f) +"}{c|}{"
-                            else:
-                                string += "\\multicolumn{" + str(f) +"}{c|}{"
-                            c += 1
-                            row_merge = 1
-                            while (row_merge + row) < len(self.name_table.rows):
-                                if self.merge_cells_word(row, column) == self.merge_cells_word(row_merge + row, column):
-                                    k = 0
-                                    while (k + column) < (column+f):
-                                        print(row_merge + row)
-                                        map_table[row_merge + row][k + column] = 1
-                                        k += 1
-                                    c += 1
-                                else:
-                                    break
-                                row_merge += 1
-                            if (column+f == len(self.name_table.columns)):
-                                string += "\multirow{" + str(c) + "}{*}{" + self.return_cells(row, column) + "}}"
-                            else:
-                                string += "\multirow{" + str(c) + "}{*}{" + self.return_cells(row, column) + "}}" + "&"
-                            #-----------------------
-                        elif row < (len(self.name_table.rows) - 1) and self.merge_cells_word(row,
-                                                                                           column) == self.merge_cells_word(
-                                row + 1, column):
-                            map_table[row][column] = 1
-                            map_table[row + 1][column] = 1
-                            c += 1
-                            row_merge = 1
-                            while row_merge + row < len(self.name_table.rows):
-                                if self.merge_cells_word(row, column) == self.merge_cells_word(row_merge + row, column):
-                                    map_table[row_merge + row][column] = 1
-                                    c += 1
-                                else:
-                                    break
-                                row_merge += 1
-                            if ((column + f) == len(self.name_table.columns)):
-                                string += "\\multirow{" + str(c) + "}{*}{" + \
-                                          self.return_cells(row,column) + "}"
-                            elif (column == 0):
-                                string += "\\multirow{" + str(c) + "}{*}{" + \
-                                          self.return_cells(row,column) + "}" + "&"
-                            else:
-                                string += "\\multirow{" + str(c) + "}{*}{" + self.return_cells(row,column) + "}" + "&"
-                        else:
-                            while (k + column) < (len(self.name_table.columns) - 1):
-                                if self.merge_cells_word(row, k + column) == self.merge_cells_word(row,
-                                                                                                   k + column + 1):
-                                    f += 1
-                                else:
-                                    break
-                                k += 1
-                            # mat-table == 0
-                            if ((column + f) == len(self.name_table.columns)): # Last cell in row
-                                string += "\\multicolumn{" + str(f) + "}{c|}{" + \
-                                          self.return_cells(row,column) + "}"
-                            elif column == 0 and (
-                                self.merge_cells_word(row, column + f) == self.merge_cells_word(row,column + f + 1)):  # First cell in row
-                                string += "\\multicolumn{" + str(f) + "}{|c}{" + self.return_cells(row, column) + "}" + "&"
-                            elif column == 0:
-                                string += "\\multicolumn{" + str(f) + "}{|c|}{" + self.return_cells(row, column) + "}" + "&"
-                            elif (self.merge_cells_word(row,column+f-1) == self.merge_cells_word(row,column+f)):
-                                string += "\\multicolumn{" + str(f) + "}{c|}{" + self.return_cells(row, column)+ "}" + "&"
-                            else:
-                                string += "\\multicolumn{" + str(f) + "}{c|}{" +self.return_cells(row, column) + "}" + "&"
-                    else:
-                        # mat-table == 1
-                        if ((column + f) == len(self.name_table.columns)): # Last cell in row
-                            string += "\\multicolumn{" + str(f) + "}{c|}{" + "}"
-                        elif column == 0 and (self.merge_cells_word(row,0) == self.merge_cells_word(row,1)): # First cell in row
-                            string += "\\multicolumn{" + str(f) + "}{|c}{" + "}" + "&"
-                        elif column == 0:
-                            string += "\\multicolumn{" + str(f) + "}{|c|}{" + "}" + "&"
-                        elif (self.merge_cells_word(row,column+f-1) == self.merge_cells_word(row,column+f)):
-                            string += "\\multicolumn{" + str(f) + "}{c}{" + "}" + "&"
-                        elif (column + f) != (len(self.name_table.columns) - 1)and map_table[row][column + f] == 1:
-                            string += "\\multicolumn{" + str(f) + "}{c}{" + "}" + "&"
-                        else:
-                            string += "\\multicolumn{" + str(f) + "}{c|}{" + "}" + "&"
-                    column = column + f
-                self.list_new_table.append(string + "\\\\")
-                hhline = "\\hhline{"
-                for column_hline in range(len(self.name_table.columns)):
-                    if row < (len(self.name_table.rows)-1) and map_table[row+1][column_hline] == 0:
-                        hhline += "-"
-                    elif row == (len(self.name_table.rows)-1):
-                        hhline += "-"
-                    else:
-                        hhline += "~"
-                hhline += "}"
-                self.list_new_table.append(hhline)
 
     def first_part_table(self):  #
         self.list_new_table.append("\\begin{longtable}" + "{" + "c" * len(self.name_table.columns) + "}")
         self.list_new_table.append("    \\multicolumn{" + str(
-            len(self.name_table.columns)) + "}{r}{Продовження на наступній сторінці\\ldots}\\\\")
+            len(self.name_table.columns)) + "}{r}{Продовження на наступній сторінці}\\\\")
         self.list_new_table.append("    \\endfoot")
         self.list_new_table.append("    \\endlastfoot")
         self.list_new_table.append("    \\hline")
@@ -265,19 +279,14 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
                     if (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) is None:
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.append(line)
-                        # print(line)
                     else:
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.extend(self.find_parameter_to_command_to_latex_file(line))
-                        # print(self.list_start_file[-1])
-                        # print(line)
                         self.list_new_table.clear()
             MyFile = open('test_table.tex', 'w')
             self.list_start_file = map(lambda x: x + '\n', self.list_start_file)
             MyFile.writelines(self.list_start_file)
             MyFile.close()
-            # line = "%Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 3}"
-            # print('\n'.join(self.list_start_file))
         else:
             print("Файлу нема!")
 
