@@ -119,6 +119,8 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
                 while column < len(self.name_table.columns):
                     f = 1
                     c = 0
+                    border_left = ""
+                    border_right = ""
                     if (map_table[row][column] == 0):
                         k = 0
                         if row < (len(self.name_table.rows) - 1) and column < (len(self.name_table.columns) - 1)\
@@ -132,11 +134,9 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
                                     break
                                 k += 1
                             if (column == 0):
-                                string += "\\multicolumn{" + str(f) +"}{|c|}{"
+                                string += "\\multicolumn{" + str(f) +"}{c|}{"
                             else:
                                 string += "\\multicolumn{" + str(f) +"}{c|}{"
-                            #map_table[row][column] = 1
-                            #map_table[row + 1][column] = 1
                             c += 1
                             row_merge = 1
                             while (row_merge + row) < len(self.name_table.rows):
@@ -145,7 +145,7 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
                                     while (k + column) < (column+f):
                                         print(row_merge + row)
                                         map_table[row_merge + row][k + column] = 1
-                                        k+=1
+                                        k += 1
                                     c += 1
                                 else:
                                     break
@@ -185,36 +185,34 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
                                 else:
                                     break
                                 k += 1
-                            if ((column + f) == len(self.name_table.columns)):
+                            # mat-table == 0
+                            if ((column + f) == len(self.name_table.columns)): # Last cell in row
                                 string += "\\multicolumn{" + str(f) + "}{c|}{" + \
                                           self.return_cells(row,column) + "}"
-                            elif (column == 0):
-                                string += "\\multicolumn{" + str(f) + "}{|c|}{" + \
-                                          self.return_cells(row,column) + "}" + "&"
+                            elif column == 0 and (
+                                self.merge_cells_word(row, column + f) == self.merge_cells_word(row,column + f + 1)):  # First cell in row
+                                string += "\\multicolumn{" + str(f) + "}{|c}{" + self.return_cells(row, column) + "}" + "&"
+                            elif column == 0:
+                                string += "\\multicolumn{" + str(f) + "}{|c|}{" + self.return_cells(row, column) + "}" + "&"
+                            elif (self.merge_cells_word(row,column+f-1) == self.merge_cells_word(row,column+f)):
+                                string += "\\multicolumn{" + str(f) + "}{c|}{" + self.return_cells(row, column)+ "}" + "&"
                             else:
-                                string += "\\multicolumn{" + str(f) + "}{c|}{" + self.name_table.cell(row,column).text+ "}" + "&"
-
+                                string += "\\multicolumn{" + str(f) + "}{c|}{" +self.return_cells(row, column) + "}" + "&"
                     else:
-
-                        if ((column + f) == len(self.name_table.columns)):
+                        # mat-table == 1
+                        if ((column + f) == len(self.name_table.columns)): # Last cell in row
                             string += "\\multicolumn{" + str(f) + "}{c|}{" + "}"
+                        elif column == 0 and (self.merge_cells_word(row,0) == self.merge_cells_word(row,1)): # First cell in row
+                            string += "\\multicolumn{" + str(f) + "}{|c}{" + "}" + "&"
                         elif column == 0:
-                            if (column + f) != (len(self.name_table.columns) - 1) and map_table[row][
-                                column + f + 1] == 0:
-                                string += "\\multicolumn{" + str(f) + "}{|c}{" + "}" + "&"
-                            else:
-                                string += "\\multicolumn{" + str(f) + "}{|c|}{" + "}" + "&"
-                        elif (column + f) != (len(self.name_table.columns)-1) and map_table[row][column+f+1] == 0:
-                            string += "\\multicolumn{" + str(f) + "}{c|}{" + "}" + "&"
-                        else:
+                            string += "\\multicolumn{" + str(f) + "}{|c|}{" + "}" + "&"
+                        elif (self.merge_cells_word(row,column+f-1) == self.merge_cells_word(row,column+f)):
                             string += "\\multicolumn{" + str(f) + "}{c}{" + "}" + "&"
-                    column = column+f
-
-                    #string = string + "&" + "\\multicolumn{" + str(f) + "}{|c|}{" + self.name_table.cell(row,
-                    #column).text + "}"
-                        # else:
-
-
+                        elif (column + f) != (len(self.name_table.columns) - 1)and map_table[row][column + f] == 1:
+                            string += "\\multicolumn{" + str(f) + "}{c}{" + "}" + "&"
+                        else:
+                            string += "\\multicolumn{" + str(f) + "}{c|}{" + "}" + "&"
+                    column = column + f
                 self.list_new_table.append(string + "\\\\")
                 hhline = "\\hhline{"
                 for column_hline in range(len(self.name_table.columns)):
@@ -222,15 +220,13 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
                         hhline += "-"
                     elif row == (len(self.name_table.rows)-1):
                         hhline += "-"
-                    elif column_hline-1 != 0 and map_table[row][column_hline-1] == 0:
-                        hhline += "|~|"
                     else:
-                        hhline += "|~|"
+                        hhline += "~"
                 hhline += "}"
                 self.list_new_table.append(hhline)
 
     def first_part_table(self):  #
-        self.list_new_table.append("\\begin{longtable}" + "{|" + "c|" * len(self.name_table.columns) + "}")
+        self.list_new_table.append("\\begin{longtable}" + "{" + "c" * len(self.name_table.columns) + "}")
         self.list_new_table.append("    \\multicolumn{" + str(
             len(self.name_table.columns)) + "}{r}{Продовження на наступній сторінці\\ldots}\\\\")
         self.list_new_table.append("    \\endfoot")
@@ -260,7 +256,7 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
         elif name_address_data.group(0) == "xlsx":
             pass  # реализация обработки xls-документов
         else:
-            return "Формат документа може бути тільки docx чи xls"
+            return "Формат документа може бути тільки docx чи xlsx"
 
     def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
         if os.path.isfile(name_address_tex_file):

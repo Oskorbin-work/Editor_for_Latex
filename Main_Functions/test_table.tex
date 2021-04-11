@@ -45,12 +45,12 @@ linktoc=page            % only page is linked
 \begin{document}
 
 \section{Введение}
-\begin{longtable}{|c|c|c|c|c|}
+\begin{longtable}{ccccc}
     \multicolumn{5}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{3}{|c|}{2}&\multicolumn{2}{c|}{3}\\
+\multicolumn{3}{|c}{2}&\multicolumn{2}{c|}{3}\\
 \hhline{-----}
 \multicolumn{1}{|c|}{4}&\multicolumn{1}{c|}{5}&\multicolumn{1}{c|}{6}&\multicolumn{1}{c|}{7}&\multicolumn{1}{c|}{8}\\
 \hhline{-----}
@@ -58,36 +58,58 @@ linktoc=page            % only page is linked
 9
 9
 9}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12 13}\\
-\hhline{|~|----}
-\multicolumn{1}{|c}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+\hhline{~----}
+\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
 13}\\
-\hhline{|~|----}
-\multicolumn{1}{|c}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+\hhline{~----}
+\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
 13}\\
-\hhline{|~|----}
-\multicolumn{1}{|c}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
+\hhline{~----}
+\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{10 11}&\multicolumn{2}{c|}{12
 13}\\
 \hhline{-----}
 \end{longtable}
-\begin{longtable}{|c|c|c|c|c|c|c|}
-    \multicolumn{7}{r}{Продовження на наступній сторінці\ldots}\\
+\begin{longtable}{cccccccc}
+    \multicolumn{8}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{2}{|c|}{\multirow{3}{*}{1}}&\multicolumn{3}{c|}{2}&\multicolumn{2}{c|}{\multirow{2}{*}{3}}\\
-\hhline{|~||~|---|~||~|}
-\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{4}&\multicolumn{1}{c|}{5}&\multicolumn{1}{c|}{6}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
-\hhline{|~||~|-----}
-\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multirow{3}{*}{17}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
-\hhline{---|~|---}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{13}&\multicolumn{1}{c|}{15}&\multicolumn{1}{c|}{}\\
-\hhline{---|~|---}
-\multicolumn{1}{|c|}{14}&\multicolumn{1}{c|}{15}&\multicolumn{1}{c|}{16}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{18}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
-\hhline{-------}
+\multirow{3}{*}{1}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multirow{3}{*}{1}\\
+\hhline{~------~}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{~------~}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{--------}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{--------}
+\multicolumn{2}{c|}{\multirow{4}{*}{2}}&\multicolumn{1}{c|}{}&\multicolumn{2}{c|}{\multirow{5}{*}{4}}&\multicolumn{1}{c|}{}&\multicolumn{2}{c|}{\multirow{4}{*}{2}}\\
+\hhline{~~-~~-~~}
+\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
+\hhline{~~-~~-~~}
+\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
+\hhline{~~-~~-~~}
+\multicolumn{1}{|c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
+\hhline{---~~---}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{--------}
+\multicolumn{2}{|c|}{3}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{2}{c|}{3}\\
+\hhline{--------}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multirow{4}{*}{5}&\multirow{4}{*}{5}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{---~~---}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{---~~---}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{---~~---}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{--------}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{--------}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{--------}
 \end{longtable}
 
 \section{Свойства, которые не должны тестироваться}
-\begin{longtable}{|c|c|c|c|c|}
+\begin{longtable}{ccccc}
     \multicolumn{5}{r}{Продовження на наступній сторінці\ldots}\\
     \endfoot
     \endlastfoot
