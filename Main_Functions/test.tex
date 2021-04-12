@@ -1,54 +1,25 @@
 \documentclass[a4paper,12pt]{article}
-\usepackage{listings}
-\usepackage{underscore}
-\usepackage{array}
-\usepackage{indentfirst}
-\usepackage[bookmarks=true]{hyperref}
 \usepackage{longtable}  % Длинные таблицы
-\usepackage{multirow}
-\usepackage{hhline}
-\usepackage{color}
-\usepackage{colortbl}
-\usepackage[left=3cm,right=1.5cm,
+\usepackage{multirow} % Обьедение по строчно
+\usepackage{hhline} % Междустрочная линия
+\usepackage{array}
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}} % Для переноса строк в ячейке
+%Внизу чисто для откладки. СОХРАНЯТЬ НЕ НАДО
+\usepackage[left=3cm,right=3cm,
 top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
-\makeatletter
-\renewcommand{\thetable}{\thesection.\@arabic\c@table}
-\usepackage{titlesec}
-%\newcommand{\subsectionbreak}{\clearpage}
-\@addtoreset{table}{section}
-\makeatother
-\hypersetup{
-	bookmarks=false,    % show bookmarks bar?
-	pdftitle={Software Requirement Specification},    % title
-	pdfauthor={Полозюк С.В.},                     % author
-	pdfsubject={TeX and LaTeX},                        % subject of the document
-	pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
-	colorlinks=true,       % false: boxed links; true: colored links
-	linkcolor=black,       % color of internal links
-	citecolor=black,       % color of links to bibliography
-	filecolor=black,        % color of file links
-	urlcolor=black,        % color of external links
-	linktoc=page            % only page is linked
-}%
-\usepackage{graphicx}  % Для вставки рисунков
-\graphicspath{{img/}}  % папки с картинками
-\newcommand{\El}{Eldorin}
-\newcommand{\Versia}{1.0.0.}
-\newcommand{\Authorgod}{Полозюк С.В.}
 \usepackage{cmap}					% поиск в PDF
 \usepackage{mathtext} 				% русские буквы в фомулах
 \usepackage[T2A]{fontenc}			% кодировка
 \usepackage[utf8]{inputenc}			% кодировка исходного текста
 \usepackage[english,russian]{babel}	% локализация и переносы
-\date{}
-\usepackage{hyperref}
 \begin{document}
 
-	\section{Введение}
+	\section{Таблица 1}
 	%Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 1}
+	\section{Таблица 2}
 	%Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 2}
 
-	\section{Свойства, которые не должны тестироваться}
+	\section{Таблица 3}
 	%Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 3}
 
 \end{document}

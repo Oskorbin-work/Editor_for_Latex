@@ -1,112 +1,83 @@
 \documentclass[a4paper,12pt]{article}
-\usepackage{listings}
-\usepackage{underscore}
-\usepackage{array}
-\usepackage{indentfirst}
-\usepackage[bookmarks=true]{hyperref}
 \usepackage{longtable}  % Длинные таблицы
-\usepackage{multirow}
-\usepackage{hhline}
-\usepackage{color}
-\usepackage{colortbl}
-\usepackage[left=3cm,right=1.5cm,
+\usepackage{multirow} % Обьедение по строчно
+\usepackage{hhline} % Междустрочная линия
+\usepackage{array}
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}} % Для переноса строк в ячейке
+%Внизу чисто для откладки. СОХРАНЯТЬ НЕ НАДО
+\usepackage[left=3cm,right=3cm,
 top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
-\makeatletter
-\renewcommand{\thetable}{\thesection.\@arabic\c@table}
-\usepackage{titlesec}
-%\newcommand{\subsectionbreak}{\clearpage}
-\@addtoreset{table}{section}
-\makeatother
-\hypersetup{
-bookmarks=false,    % show bookmarks bar?
-pdftitle={Software Requirement Specification},    % title
-pdfauthor={Полозюк С.В.},                     % author
-pdfsubject={TeX and LaTeX},                        % subject of the document
-pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
-colorlinks=true,       % false: boxed links; true: colored links
-linkcolor=black,       % color of internal links
-citecolor=black,       % color of links to bibliography
-filecolor=black,        % color of file links
-urlcolor=black,        % color of external links
-linktoc=page            % only page is linked
-}%
-\usepackage{graphicx}  % Для вставки рисунков
-\graphicspath{{img/}}  % папки с картинками
-\newcommand{\El}{Eldorin}
-\newcommand{\Versia}{1.0.0.}
-\newcommand{\Authorgod}{Полозюк С.В.}
 \usepackage{cmap}					% поиск в PDF
 \usepackage{mathtext} 				% русские буквы в фомулах
 \usepackage[T2A]{fontenc}			% кодировка
 \usepackage[utf8]{inputenc}			% кодировка исходного текста
 \usepackage[english,russian]{babel}	% локализация и переносы
-\date{}
-\usepackage{hyperref}
 \begin{document}
 
-\section{Введение}
+\section{Таблица 1}
 \begin{longtable}{ccccc}
     \multicolumn{5}{r}{Продовження на наступній сторінці}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{3}{|c|}{1203}&\multicolumn{2}{c|}{1235}\\
+\multicolumn{3}{|>{\centering\arraybackslash}p{8.12cm}|}{\specialcell{2\\4\\}}&\multicolumn{2}{>{\centering\arraybackslash}p{5.58cm}|}{\specialcell{3\\4\\4\\4\\}}\\
 \hhline{-----}
-\multicolumn{1}{|c|}{2301}&\multicolumn{1}{c|}{2312}&\multicolumn{1}{c|}{2323}&\multicolumn{1}{c|}{2334}&\multicolumn{1}{c|}{2345}\\
+\multicolumn{1}{|>{\centering\arraybackslash}p{2.71cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}p{2.7cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}p{2.71cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}p{2.79cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}p{2.79cm}|}{}\\
 \hhline{-----}
-\multicolumn{1}{|c|}{\multirow{4}{*}{3701}}&\multicolumn{2}{c|}{3413}&\multicolumn{2}{c|}{3435}\\
+\multicolumn{1}{|>{\centering\arraybackslash}p{2.71cm}|}{\multirow{4}{*}{\specialcell{5\\5\\5\\5\\}}}&\multicolumn{2}{>{\centering\arraybackslash}p{5.41cm}|}{авав}&\multicolumn{2}{>{\centering\arraybackslash}p{5.58cm}|}{}\\
 \hhline{|~|----}
-\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{4513}&\multicolumn{2}{c|}{4535}\\
+\multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}p{5.41cm}|}{}&\multicolumn{2}{>{\centering\arraybackslash}p{5.58cm}|}{}\\
 \hhline{|~|----}
-\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{5613}&\multicolumn{2}{c|}{5635}\\
+\multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}p{5.41cm}|}{}&\multicolumn{2}{>{\centering\arraybackslash}p{5.58cm}|}{}\\
 \hhline{|~|----}
-\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{6713}&\multicolumn{2}{c|}{6735}\\
+\multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}p{5.41cm}|}{}&\multicolumn{2}{>{\centering\arraybackslash}p{5.58cm}|}{}\\
 \hhline{-----}
 \end{longtable}
+\section{Таблица 2}
 \begin{longtable}{cccccccc}
     \multicolumn{8}{r}{Продовження на наступній сторінці}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{1}{|c|}{\multirow{10}{*}{11101}}&\multicolumn{1}{c|}{\multirow{3}{*}{1412}}&\multicolumn{2}{c|}{\multirow{2}{*}{1324}}&\multicolumn{1}{c|}{1245}&\multicolumn{1}{c|}{1256}&\multicolumn{1}{c|}{1267}&\multicolumn{1}{c|}{\multirow{3}{*}{1478}}\\
-\hhline{|~|~|~~|---~|}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{2345}&\multicolumn{1}{c|}{2356}&\multicolumn{1}{c|}{2367}&\multicolumn{1}{c|}{}\\
-\hhline{|~|~|-----~|}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{3423}&\multicolumn{1}{c|}{3434}&\multicolumn{1}{c|}{3445}&\multicolumn{1}{c|}{3456}&\multicolumn{1}{c|}{3467}&\multicolumn{1}{c|}{}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{1.75cm}|}{\multirow{10}{*}{dsds}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{\multirow{3}{*}{1}}&\multicolumn{2}{>{\raggedright\arraybackslash}p{3.49cm}|}{\multirow{2}{*}{6}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{2}{>{\raggedright\arraybackslash}p{3.46cm}|}{\multirow{4}{*}{8}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{\multirow{3}{*}{1}}\\
+\hhline{|~|~|~~|-~~|~|}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{|~|~|---~~|~|}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{7}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
+\hhline{|~|----~~|-}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
 \hhline{|~|-------}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{4512}&\multicolumn{1}{c|}{4523}&\multicolumn{1}{c|}{4534}&\multicolumn{1}{c|}{4545}&\multicolumn{1}{c|}{4556}&\multicolumn{1}{c|}{4567}&\multicolumn{1}{c|}{4578}\\
-\hhline{|~|-------}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{5612}&\multicolumn{3}{c|}{\multirow{3}{*}{5070725}}&\multicolumn{3}{c|}{\multirow{3}{*}{5070758}}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{3}{>{\raggedright\arraybackslash}p{5.24cm}|}{\multirow{3}{*}{4}}&\multicolumn{3}{>{\raggedright\arraybackslash}p{4.76cm}|}{\multirow{3}{*}{2}}\\
 \hhline{|~|-~~~|~~~|}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{6712}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
 \hhline{|~|-~~~|~~~|}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{7812}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
 \hhline{|~|-------}
-\multicolumn{1}{|c|}{}&\multicolumn{2}{c|}{\multirow{4}{*}{81213}}&\multicolumn{1}{c|}{8934}&\multicolumn{2}{c|}{8946}&\multicolumn{1}{c|}{8967}&\multicolumn{1}{c|}{8978}\\
-\hhline{|~|~~|-----}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{91034}&\multicolumn{1}{c|}{91045}&\multicolumn{1}{c|}{91056}&\multicolumn{2}{c|}{91068}\\
-\hhline{|~|~~|-----}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{\multirow{4}{*}{101434}}&\multicolumn{1}{c|}{\multirow{4}{*}{101445}}&\multicolumn{2}{c|}{\multirow{4}{*}{101457}}&\multicolumn{1}{c|}{101178}\\
-\hhline{-~~|~|~|~~|-}
-\multicolumn{1}{|c|}{111201}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{111278}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{\multirow{4}{*}{}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{\multirow{4}{*}{}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{2}{>{\raggedright\arraybackslash}p{3.49cm}|}{5}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.72cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
+\hhline{|~|~|~|-----}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.74cm}|}{}&\multicolumn{2}{>{\raggedright\arraybackslash}p{3.02cm}|}{3}\\
+\hhline{|~|~|~|-----}
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{\multirow{4}{*}{5}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{\multirow{4}{*}{5}}&\multicolumn{2}{>{\raggedright\arraybackslash}p{3.46cm}|}{\multirow{4}{*}{10}}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
+\hhline{-~|~|~|~|~~|-}
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
 \hhline{---~|~|~~|-}
-\multicolumn{1}{|c|}{121301}&\multicolumn{1}{c|}{121312}&\multicolumn{1}{c|}{121323}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{121378}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
 \hhline{---~|~|~~|-}
-\multicolumn{1}{|c|}{131401}&\multicolumn{1}{c|}{131412}&\multicolumn{1}{c|}{131423}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{131478}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
 \hhline{--------}
-\multicolumn{1}{|c|}{141501}&\multicolumn{1}{c|}{141512}&\multicolumn{1}{c|}{141523}&\multicolumn{1}{c|}{141534}&\multicolumn{1}{c|}{141545}&\multicolumn{1}{c|}{141556}&\multicolumn{1}{c|}{141567}&\multicolumn{1}{c|}{141578}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{ }&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.74cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.72cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
 \hhline{--------}
-\multicolumn{1}{|c|}{151601}&\multicolumn{1}{c|}{151612}&\multicolumn{1}{c|}{151623}&\multicolumn{1}{c|}{151634}&\multicolumn{1}{c|}{151645}&\multicolumn{1}{c|}{151656}&\multicolumn{1}{c|}{151667}&\multicolumn{1}{c|}{151678}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.75cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.74cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.72cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}p{1.3cm}|}{}\\
 \hhline{--------}
 \end{longtable}
 
-\section{Свойства, которые не должны тестироваться}
+\section{Таблица 3}
 \begin{longtable}{ccccc}
     \multicolumn{5}{r}{Продовження на наступній сторінці}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{1}{|c|}{1201}&\multicolumn{1}{c|}{1212}&\multicolumn{1}{c|}{1223}&\multicolumn{1}{c|}{1234}&\multicolumn{1}{c|}{1245}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}p{2.77cm}|}{6}&\multicolumn{1}{>{\raggedright\arraybackslash}p{2.73cm}|}{7}&\multicolumn{1}{>{\raggedright\arraybackslash}p{2.73cm}|}{8}&\multicolumn{1}{>{\raggedright\arraybackslash}p{2.73cm}|}{9}&\multicolumn{1}{>{\raggedright\arraybackslash}p{2.74cm}|}{10}\\
 \hhline{-----}
 \end{longtable}
 

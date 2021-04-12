@@ -97,7 +97,6 @@ class Generation_latex_word:
                 column = 0
                 map_table_hline = [""] * len(self.name_table.columns)
                 while column < len(self.name_table.columns):
-
                     f = 1
                     c = 0
                     if column == 0:
@@ -122,14 +121,14 @@ class Generation_latex_word:
                                 k += 1
                             border_right = "|"
                             map_table_hline[column+f-1] = "|"
-                            string += "\\multicolumn{" + str(f) +"}{" + border_left + "c" + border_right +"}{"
+                            string += "\\multicolumn{" + str(f) +"}{" + border_left + self.paragraphs_alignment_cell(row,column) + border_right +"}{"
                             c += 1
                             row_merge = 1
                             while (row_merge + row) < len(self.name_table.rows):
                                 if self.merge_cells_word(row, column) == self.merge_cells_word(row_merge + row, column):
                                     k = 0
                                     while (k + column) < (column+f-1):
-                                        map_table[row_merge + row][k + column] = 1
+                                        map_table[row_merge + row][k + column] = 2
                                         k += 1
                                     map_table[row_merge + row][k + column] = 2 # Last column to merge_cell
                                     c += 1
@@ -150,7 +149,7 @@ class Generation_latex_word:
                             row_merge = 1
                             border_right = "|"
                             map_table_hline[column + f-1] = "|"
-                            string += "\\multicolumn{" + str(1) + "}{" + border_left + "c" + border_right + "}{"
+                            string += "\\multicolumn{" + str(1) + "}{" + border_left + self.paragraphs_alignment_cell(row,column) + border_right + "}{"
                             while row_merge + row < len(self.name_table.rows):
                                 if self.merge_cells_word(row, column) == self.merge_cells_word(row_merge + row, column):
                                     map_table[row_merge + row][column] = 1
@@ -184,7 +183,7 @@ class Generation_latex_word:
                                 ampersand = "&"
                             border_right = "|"
                             map_table_hline[column + f-1] = "|"
-                            string += "\\multicolumn{" + str(f) + "}{"+ border_left +"c" + border_right+"}{" + \
+                            string += "\\multicolumn{" + str(f) + "}{"+ border_left +self.paragraphs_alignment_cell(row,column) + border_right+"}{" + \
                                           self.return_cells(row,column) + "}" + ampersand
                     else:
                         # map-table == 1
@@ -198,12 +197,14 @@ class Generation_latex_word:
                         elif column + f != len(self.name_table.columns) and self.merge_cells_word(row,column) != self.merge_cells_word(row,column+1):
                             border_right = "|"
                             map_table_hline[column + f-1] = "|"
-                        string += "\\multicolumn{" + str(f) + "}{" + border_left + "c" + border_right + "}{" + "}" + ampersand
+                        if (map_table == 1):
+                            string += "\\multicolumn{" + str(f) + "}{" + border_left + self.paragraphs_alignment_cell(row,column) + border_right + "}{" + "}" + ampersand
+                        else:
+                            string += "\\multicolumn{" + str(f) + "}{" + border_left + "c" + border_right + "}{" + "}" + ampersand
                     column = column + f
                 self.list_new_table.append(string + "\\\\")
                 hhline = "\\hhline{"
                 for column_hline in range(len(self.name_table.columns)):
-                    print(map_table_hline)
                     if row == (len(self.name_table.rows) - 1):
                         hhline += "-"
                     elif map_table[row+1][column_hline] == 0:
@@ -234,10 +235,32 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
             return str(self.name_table.cell(row, column)._tc.top) + "0707" + \
                str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
 
-    def return_cells(self,row,column):
-       # return self.name_table.cell(row,column).text
-       return  self.merge_cells_word(row,column)
+    def paragraphs_alignment_cell(self,row,column):
+        a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
+        a = round(a*0.9,2)
+        print(str(a) + "cm")
+        a_aligment = str(self.name_table.cell(row, column).paragraphs[0].alignment)
+        if a_aligment == "RIGHT (2)":
+            return (">{\\raggedleft\\arraybackslash}p{" + str(a) + "cm" + "}")
+        elif a_aligment == "CENTER (1)":
+            return (">{\\centering\\arraybackslash}p{" + str(a) + "cm" + "}")
+        elif a_aligment == "LEFT (4)":
+            return(">{\\raggedright\\arraybackslash}p{" + str(a) + "cm" + "}")
+        elif a_aligment == "JUSTIFY (3)":
+            return (">{\\raggedright\\arraybackslash}p{" + str(a) + "cm" + "}")
+        else:
+            return (">{\\raggedright\\arraybackslash}p{" + str(a) + "cm" + "}")
 
+    def return_cells(self,row,column):
+        # Ширина каждой ячейки
+        if len (self.name_table.cell(row,column).paragraphs) == 1:
+            return self.name_table.cell(row, column).text
+        else:
+            string = "\specialcell{"
+            for paragraph in self.name_table.cell(row,column).paragraphs:
+                string += paragraph.text +"\\\\"
+            string += "}"
+            return string
 
     def first_part_table(self):  #
         self.list_new_table.append("\\begin{longtable}" + "{" + "c" * len(self.name_table.columns) + "}")
