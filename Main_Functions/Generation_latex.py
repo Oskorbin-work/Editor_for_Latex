@@ -1,31 +1,47 @@
 """
 Ворд:
-Что не получилось:
-1) Что если в таблице удалена ячейка в строке? В этом случае, увы, ничего сделать невозможно. С точки зрения библиотеки,
-    отсутсвие ячейки означает, что береться ячейка со следуйщей строки. Что в свою очередь делает неправильную
-    структуру таблицы, а данные отображаются не в своих ячейках. Вывод:
-        для корректного переноса таблицы, нужно чтобы структура таблицы была прямоугольна. Даже, если нужно, чтобы
-        ячейки не было, то, просто, нужно в нее вписать такое "Абракадавра 1" и в латехе, не будет отображаться
-        левая граница
-2) Формулы. Много читал по их переносу. Библиотека не поддерживает ее. Можно через XML, но это сложно.
- Кроме того, преоброзовать формулу из ворда в латех -- задача требующих познаний в математике (с точки зрения как строя-
- тся формулы и т.д. Чую тут много тонкостей ) и большой обьем труда. Боюсь, что полноценная конвертация ворда в латех
- -- это уже полноценная тема для диплома.  А у меня кроме этого, есть еще функции. Поэтому, оставлю на последок, если
- будет время.
- Костыль-решение: в ворде можно преоброзвать формулу в латех-форму. Возможно, пользователь должен конвертировать так
- форумулу, после чего, скопировать ее в ячейку и до нее написать "Абракадавра 2". Я же одену ее в форму для формул
- в латехе и выведу в латех. Но это уже в самом конце разработки.
+1) Что если в таблице удалена ячейка в строке? В этом случае, нужно вывести ошибку про нарушение структуры таблицы.
+2) Формулы. Библиотека питона их не видит. Для него формула -- пустота. Но если в ячейке есть обычный текст, то он
+его отлично видит и отобразит его так же как в ячейке, но без формулы.
+3) Рисунки. Тоже самое, что и с формулами.
+3.1)Таблица внутри ячейки. Тоже что и формулы.
+4) Слияние/объеденние ячеек работает без багов
+5) Полужирный , курсив, нижнее подчеркивание, Нижний/вверхний индекс -- есть и работает стабильно.
+6) Границы. Поддерживается только одна толщина и отображаются везде, кроме тех случаев, когда речь про
+ объеденные ячейки.
+7) Ширина ячейки. Тут есть проблемы. Латех не правильно отображает сантиметры , а ворд не очень корректно выдает
+данные по ширине. К примеру, если в ячейке (в ворде) есть формула или же картинка, то ширина картинки/формулы
+не учитывается. Видимо, ворд подставляет размер картинки во время внутренной работы, а в XML хранит размер без
+учета формул/картинки.
+Баг 7 пункта: Как оказалось, если ширина ячейки не указана (ворде можно такое сделать), то вызывается ошибка. Позже
+исправить.
+8) Выравнение. Если речь про то, что текст может быть слева/справа/по-центру, то проблем нету. Однако, если речь про
+то что текст можеть быть сверху/внизу/центру, то тут уже проблемы. Как оказалось, метод, которым я это делаю,
+имеет проблемы с том, что если в одной строке в одной ячейке  указано, что текст сверху, а в другой ячейке текст внизу,
+то так не может быть. Каждая ячейка наследует поведение прошлой ячейки. Поэтому, если впервой ячейке текст сверху, то
+все ячейки одной строки будут иметь текст с сверху. Кроме того, библиотека для работы с вордом не корректно отображает
+выравнивание текст. Поэтому было решено, что весь текст в таблицах будет по центру. Но если он находиться справа или
+слева, то это будет учтено. Если же сверху/внизу, то это не будет учтено и текст будет по середение высоты ячейки.
+9) Распределение текста в ячейке. multirow пока-что сопротивляется, но думаю все будет с ним.
+Баг: Текст по всей ширине
+10) Фон/цвет ячеек. Как я понял это не нужно. А раз не нужно -- не делаеться.
+11) Шрифт текста. Я когда-то изучал латех, то выявил, что латех не очень имеет дружбу с шрифтами ворда. В теории, я могу
+вывести шрифт ворда, но сформировать его в латехе.... Сложно и как по мне не имеет смысла. Поэтому, таблицы наследуют
+тот же шрифт, что используется в тех-документе.
+12) Размер текста. В теории возможно, но в латехе странные функции по изменению размера.
+13) В ворде можно поставить двойное зачеркивание текста. В латехе не нашел команды. Нужно ли?
+14)
+
 
 """
 """
 Примечание:
--Сделать проверку на docx файл
 1) Работа с ворд документами.
     1.1) Найти нужную таблицу +/- Корректный способ?
     1.2) Анализ каждой ячейки. Для удобства, описывается только первая табличка
-        1.2.1) Каждого слова!
-            1.2.1.1) Стиль (Жирный, обычный, курсив)
-            1.2.1.2) Подчеркивание
+        1.2.1) Каждого слова!+
+            1.2.1.1) Стиль (Жирный, обычный, курсив) +
+            1.2.1.2) Подчеркивание +
             1.2.1.4) Цвет шрифта
             1.2.1.5) Двойное зачеркивание
             1.2.1.6) Цвет выделения
@@ -34,9 +50,7 @@
             1.2.1.8) Направление текста
             1.2.1.9) Размер шрифта.
             1.2.1.10) Нижний индекс и вверхний индекс.
-2) Работа с эксель документами.
 3) Получить таблицу. +
-4) Понять какой это формат.+
 7) Разработка команды, через которую можно обратиться к ворду/екселю. Функция будет прописываться в латех-файле. +
 8) Научиться искать эту команду в латех-файле.+
 9) Получать таблицу по этой команде.+
@@ -51,10 +65,6 @@
 import os
 import docx
 import re
-
-
-class Generation_latex_excel:
-    pass
 
 
 class Generation_latex_word:
@@ -217,8 +227,7 @@ class Generation_latex_word:
                 self.list_new_table.append(hhline)
 
 
-
-class Generation_latex(Generation_latex_word, Generation_latex_excel):
+class Generation_latex(Generation_latex_word):
 
     def __init__(self):
         self.doc = ""
@@ -238,29 +247,86 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
     def paragraphs_alignment_cell(self,row,column):
         a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
         a = round(a*0.9,2)
-        print(str(a) + "cm")
         a_aligment = str(self.name_table.cell(row, column).paragraphs[0].alignment)
         if a_aligment == "RIGHT (2)":
-            return (">{\\raggedleft\\arraybackslash}p{" + str(a) + "cm" + "}")
+            return (">{\\raggedleft\\arraybackslash}m{" + str(a) + "cm" + "}")
         elif a_aligment == "CENTER (1)":
-            return (">{\\centering\\arraybackslash}p{" + str(a) + "cm" + "}")
+            return (">{\\centering\\arraybackslash}m{" + str(a) + "cm" + "}")
         elif a_aligment == "LEFT (4)":
-            return(">{\\raggedright\\arraybackslash}p{" + str(a) + "cm" + "}")
+            return(">{\\raggedright\\arraybackslash}m{" + str(a) + "cm" + "}")
         elif a_aligment == "JUSTIFY (3)":
-            return (">{\\raggedright\\arraybackslash}p{" + str(a) + "cm" + "}")
+            return ("m{" + str(a) + "cm" + "}")
         else:
-            return (">{\\raggedright\\arraybackslash}p{" + str(a) + "cm" + "}")
+            return (">{\\raggedright\\arraybackslash}m{" + str(a) + "cm" + "}")
+
+    def run_bold(self,string_r,status):
+        if status == "True":
+            return "\\textbf{" + string_r +"}"
+        else:
+            return string_r
+
+    def run_italic(self,string_r,status):
+        if status == "True":
+            return "\\textit{" + string_r +"}"
+        else:
+            return string_r
+
+    def run_underline(self,string_r,status):
+        if status == "True":
+            return "\\underline{" + string_r +"}"
+        else:
+            return string_r
+
+    def run_font_strike(self,string_r,status):
+        if status == "True":
+            return "\\sout{" + string_r +"}"
+        else:
+            return string_r
+
+    def run_font_subscript(self,string_r,status):
+        if status == "True":
+            return "True"
+        else:
+            return "False"
+
+    def run_font_superscript(self,string_r,status):
+        if status == "True":
+            return "True"
+        else:
+            return "False"
 
     def return_cells(self,row,column):
         # Ширина каждой ячейки
-        if len (self.name_table.cell(row,column).paragraphs) == 1:
+        if len (self.name_table.cell(row, column).paragraphs) == 1:
             return self.name_table.cell(row, column).text
         else:
-            string = "\specialcell{"
-            for paragraph in self.name_table.cell(row,column).paragraphs:
-                string += paragraph.text +"\\\\"
-            string += "}"
-            return string
+            string_p = ""
+            string_r = ""
+            for paragraph in self.name_table.cell(row, column).paragraphs:
+                string_r = ""
+                for run in paragraph.runs:
+                    string_rr = run.text
+                    math_first = ""
+                    math_formula = ""
+                    math_last = ""
+                    if self.run_font_subscript(string_rr, str(run.font.subscript)) == "True":
+                        math_first = "$"
+                        math_formula = "_{"
+                        math_last = "}$"
+                    if self.run_font_subscript(string_rr, str(run.font.superscript)) == "True":
+                        math_first = "$"
+                        math_formula = "^{"
+                        math_last = "}$"
+                    if string_rr != (" " or ". "):
+                        string_rr = self.run_bold(string_rr, str(run.bold))
+                        string_rr = self.run_italic(string_rr, str(run.italic))
+                    string_rr = self.run_underline(string_rr, str(run.underline))
+                    string_rr = self.run_font_strike(string_rr, str(run.font.strike))
+                    string_r += math_first + math_formula + string_rr + math_last
+                string_p += string_r + "\pol "
+            string_p = string_p[0:-5]
+            string_p += ""
+            return string_p
 
     def first_part_table(self):  #
         self.list_new_table.append("\\begin{longtable}" + "{" + "c" * len(self.name_table.columns) + "}")
@@ -290,10 +356,8 @@ class Generation_latex(Generation_latex_word, Generation_latex_excel):
         name_address_data = re.search(r'[^.]+$', name_address.group(0))
         if name_address_data.group(0) == "docx":
             return self.search_docx_file(name_address.group(0), name_table.group(0))
-        elif name_address_data.group(0) == "xlsx":
-            pass  # реализация обработки xls-документов
         else:
-            return "Формат документа може бути тільки docx чи xlsx"
+            return "Формат документа може бути тільки docx"
 
     def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
         if os.path.isfile(name_address_tex_file):
