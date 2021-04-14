@@ -23,16 +23,22 @@
 выравнивание текст. Поэтому было решено, что весь текст в таблицах будет по центру. Но если он находиться справа или
 слева, то это будет учтено. Если же сверху/внизу, то это не будет учтено и текст будет по середение высоты ячейки.
 9) Распределение текста в ячейке. multirow пока-что сопротивляется, но думаю все будет с ним.
-Баг: Текст по всей ширине
 10) Фон/цвет ячеек. Как я понял это не нужно. А раз не нужно -- не делаеться.
 11) Шрифт текста. Я когда-то изучал латех, то выявил, что латех не очень имеет дружбу с шрифтами ворда. В теории, я могу
 вывести шрифт ворда, но сформировать его в латехе.... Сложно и как по мне не имеет смысла. Поэтому, таблицы наследуют
 тот же шрифт, что используется в тех-документе.
 12) Размер текста. В теории возможно, но в латехе странные функции по изменению размера.
 13) В ворде можно поставить двойное зачеркивание текста. В латехе не нашел команды. Нужно ли?
-14)
-
-
+14) Размер шрифта. Все было бы хорошо, если бы не одно НО. Если размер шрифта таблички совпадает с размером шрифта по
+документу, то я не могу узнать его узнать -- функция выведет None, а не размер кегля. Узнать размер общий шрифт докумен-
+та не очень-то и можно. Решил так. Если размер кегля совпадает с размером документа в ворде, то значит кегль таблицы
+в латехе наследуется от общей настройки в  команде \documentclass[a4paper,12pt]{article}. В противном случае, размер
+кегля таблицы будет корректироваться командой \small. Тоесть, если кегль документа 14pt, то табличка будет 12pt.
+После синтаксиса таблицы, будет выводиться \normalsize.
+Как я понял, кегль внутри таблички должен быть одинаковым. К тому же, если изменять размер каждого слова, то текст
+начинает не очень адекватно выводиться и может вывестись весь в одну строку.
+15) Табуляция в таблицах. Решено было пропустить.
+16) Междустрочный интервал. Наследуется от латеха.
 """
 """
 Примечание:
@@ -98,6 +104,24 @@ class Generation_latex_word:
         if find_table == False:  # Если таблица не нашлась
             return "Таблиця не знайдена"
 
+    def align_multirow(self, row, column):
+        a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
+        a = round(a*0.9,1)
+        string = "\\parbox{" + str(a) + "cm" + "}{"
+        a_aligment = str(self.name_table.cell(row, column).paragraphs[0].alignment)
+        if a_aligment == "RIGHT (2)":
+            string += " \\raggedleft "
+            return string
+        elif a_aligment == "CENTER (1)":
+            string += " \\centering "
+            return string
+        elif a_aligment == "LEFT (4)":
+            string += " \\raggedright "
+            return string
+        elif a_aligment == "JUSTIFY (3)":
+            return string
+        else:
+            return string
     def every_row(self):
         map_table = [[0] * len(self.name_table.columns) for i in range(len(self.name_table.rows))]
         for row in range(len(self.name_table.rows)):
@@ -146,9 +170,9 @@ class Generation_latex_word:
                                     break
                                 row_merge += 1
                             if (column+f == len(self.name_table.columns)):
-                                string += "\multirow{" + str(c) + "}{*}{" + self.return_cells(row, column) + "}}"
+                                string += "\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ self.return_cells(row, column) + "}}}"
                             else:
-                                string += "\multirow{" + str(c) + "}{*}{" + self.return_cells(row, column) + "}}" + "&"
+                                string += "\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column) + self.return_cells(row, column) + "}}}" + "&"
                             #-----------------------
                         elif row < (len(self.name_table.rows) - 1) \
                                 and self.merge_cells_word(row,column) == \
@@ -169,13 +193,13 @@ class Generation_latex_word:
                                 row_merge += 1
                                 map_table_hline[column+f-1] = "|"
                             if ((column + f) == len(self.name_table.columns)):
-                                string += "\\multirow{" + str(c) + "}{*}{" + \
-                                          self.return_cells(row,column) + "}}"
+                                string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ \
+                                          self.return_cells(row,column) + "}}}"
                             elif (column == 0):
-                                string += "\\multirow{" + str(c) + "}{*}{" + \
-                                          self.return_cells(row,column) + "}}" + "&"
+                                string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ \
+                                          self.return_cells(row,column) + "}}}" + "&"
                             else:
-                                string += "\\multirow{" + str(c) + "}{*}{" + self.return_cells(row,column) + "}}" + "&"
+                                string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ self.return_cells(row,column) + "}}}" + "&"
                         else:
                             while (k + column) < (len(self.name_table.columns) - 1):
                                 if self.merge_cells_word(row, k + column) == self.merge_cells_word(row,
@@ -246,7 +270,7 @@ class Generation_latex(Generation_latex_word):
 
     def paragraphs_alignment_cell(self,row,column):
         a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
-        a = round(a*0.9,2)
+        a = round(a*0.9,1)
         a_aligment = str(self.name_table.cell(row, column).paragraphs[0].alignment)
         if a_aligment == "RIGHT (2)":
             return (">{\\raggedleft\\arraybackslash}m{" + str(a) + "cm" + "}")
@@ -295,40 +319,48 @@ class Generation_latex(Generation_latex_word):
         else:
             return "False"
 
+    def table_font_size(self):
+        try:
+            status_size = str(self.name_table.cell(1, 0).paragraphs[0].runs[0].font.size)
+        except Exception:
+            status_size = "None"
+        if status_size == "None":
+            return "False"
+        else:
+            return "True"
     def return_cells(self,row,column):
         # Ширина каждой ячейки
-        if len (self.name_table.cell(row, column).paragraphs) == 1:
-            return self.name_table.cell(row, column).text
-        else:
-            string_p = ""
+        string_p = ""
+        string_r = ""
+        for paragraph in self.name_table.cell(row, column).paragraphs:
             string_r = ""
-            for paragraph in self.name_table.cell(row, column).paragraphs:
-                string_r = ""
-                for run in paragraph.runs:
-                    string_rr = run.text
-                    math_first = ""
-                    math_formula = ""
-                    math_last = ""
-                    if self.run_font_subscript(string_rr, str(run.font.subscript)) == "True":
-                        math_first = "$"
-                        math_formula = "_{"
-                        math_last = "}$"
-                    if self.run_font_subscript(string_rr, str(run.font.superscript)) == "True":
-                        math_first = "$"
-                        math_formula = "^{"
-                        math_last = "}$"
-                    if string_rr != (" " or ". "):
-                        string_rr = self.run_bold(string_rr, str(run.bold))
-                        string_rr = self.run_italic(string_rr, str(run.italic))
-                    string_rr = self.run_underline(string_rr, str(run.underline))
-                    string_rr = self.run_font_strike(string_rr, str(run.font.strike))
-                    string_r += math_first + math_formula + string_rr + math_last
-                string_p += string_r + "\pol "
-            string_p = string_p[0:-5]
-            string_p += ""
-            return string_p
+
+            for run in paragraph.runs:
+                string_rr = run.text
+                math_first = ""
+                math_formula = ""
+                math_last = ""
+                if self.run_font_subscript(string_rr, str(run.font.subscript)) == "True":
+                    math_first = "$"
+                    math_formula = "_{"
+                    math_last = "}$"
+                if self.run_font_subscript(string_rr, str(run.font.superscript)) == "True":
+                    math_first = "$"
+                    math_formula = "^{"
+                    math_last = "}$"
+                if string_rr != (" " or ". "):
+                    string_rr = self.run_bold(string_rr, str(run.bold))
+                    string_rr = self.run_italic(string_rr, str(run.italic))
+                string_rr = self.run_underline(string_rr, str(run.underline))
+                string_rr = self.run_font_strike(string_rr, str(run.font.strike))
+                string_r += math_first + math_formula + string_rr + math_last
+            string_p += string_r + "\pol "
+        string_p = string_p[0:-5]
+        string_p += ""
+        return string_p
 
     def first_part_table(self):  #
+        if self.table_font_size() == "True": self.list_new_table.append("\\small")
         self.list_new_table.append("\\begin{longtable}" + "{" + "c" * len(self.name_table.columns) + "}")
         self.list_new_table.append("    \\multicolumn{" + str(
             len(self.name_table.columns)) + "}{r}{Продовження на наступній сторінці}\\\\")
@@ -341,9 +373,8 @@ class Generation_latex(Generation_latex_word):
         self.first_part_table()
         self.every_row()
         self.list_new_table.append("\\end{longtable}")
+        if self.table_font_size() == "True": self.list_new_table.append("\\normalsize")
         return self.list_new_table
-        # return name_table.rows[0].cells[0].text
-        # print(self.doc.tables[0].rows[0].cells[0].paragraphs[0].runs[0].bold)
 
     def find_parameter_to_command_to_latex_file(self, structure_command):  # разбивает команду на параметры
         # Баг: Что если параметров будет не правильное количество?
