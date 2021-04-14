@@ -1,51 +1,51 @@
 \documentclass[a4paper,11pt]{article}
-\usepackage{longtable}  % Äëèííûå òàáëèöû
-\usepackage{multirow} % Îáüåäåíèå ïî ñòðî÷íî
-\usepackage{hhline} % Ìåæäóñòðî÷íàÿ ëèíèÿ
+\usepackage{longtable}  % Ð”Ð»Ð¸Ð½Ð½Ñ‹Ðµ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹
+\usepackage{multirow} % ÐžÐ±ÑŒÐµÐ´ÐµÐ½Ð¸Ðµ Ð¿Ð¾ ÑÑ‚Ñ€Ð¾Ñ‡Ð½Ð¾
+\usepackage{hhline} % ÐœÐµÐ¶Ð´ÑƒÑÑ‚Ñ€Ð¾Ñ‡Ð½Ð°Ñ Ð»Ð¸Ð½Ð¸Ñ
 \usepackage{array}
-\usepackage[normalem]{ulem} % Çà÷åðêèâàíèå òåêñòà
-\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}} % Äëÿ ïåðåíîñà ñòðîê â ÿ÷åéêå
+\usepackage[normalem]{ulem} % Ð—Ð°Ñ‡ÐµÑ€ÐºÐ¸Ð²Ð°Ð½Ð¸Ðµ Ñ‚ÐµÐºÑÑ‚Ð°
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}} % Ð”Ð»Ñ Ð¿ÐµÑ€ÐµÐ½Ð¾ÑÐ° ÑÑ‚Ñ€Ð¾Ðº Ð² ÑÑ‡ÐµÐ¹ÐºÐµ
 \newcommand{\pol}
 {
 
 
 }
-%Âíèçó ÷èñòî äëÿ îòêëàäêè. ÑÎÕÐÀÍßÒÜ ÍÅ ÍÀÄÎ
+%Ð’Ð½Ð¸Ð·Ñƒ Ñ‡Ð¸ÑÑ‚Ð¾ Ð´Ð»Ñ Ð¾Ñ‚ÐºÐ»Ð°Ð´ÐºÐ¸. Ð¡ÐžÐ¥Ð ÐÐÐ¯Ð¢Ð¬ ÐÐ• ÐÐÐ”Ðž
 \usepackage[left=3cm,right=3cm,
 top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
-\usepackage{cmap}					% ïîèñê â PDF
-\usepackage{mathtext} 				% ðóññêèå áóêâû â ôîìóëàõ
-\usepackage[T2A]{fontenc}			% êîäèðîâêà
-\usepackage[utf8]{inputenc}			% êîäèðîâêà èñõîäíîãî òåêñòà
-\usepackage[english,russian]{babel}	% ëîêàëèçàöèÿ è ïåðåíîñû
+\usepackage{cmap}					% Ð¿Ð¾Ð¸ÑÐº Ð² PDF
+\usepackage{mathtext} 				% Ñ€ÑƒÑÑÐºÐ¸Ðµ Ð±ÑƒÐºÐ²Ñ‹ Ð² Ñ„Ð¾Ð¼ÑƒÐ»Ð°Ñ…
+\usepackage[T2A]{fontenc}			% ÐºÐ¾Ð´Ð¸Ñ€Ð¾Ð²ÐºÐ°
+\usepackage[utf8]{inputenc}			% ÐºÐ¾Ð´Ð¸Ñ€Ð¾Ð²ÐºÐ° Ð¸ÑÑ…Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ñ‚ÐµÐºÑÑ‚Ð°
+\usepackage[english,russian]{babel}	% Ð»Ð¾ÐºÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð¸ Ð¿ÐµÑ€ÐµÐ½Ð¾ÑÑ‹
 \begin{document}
 
-\section{Òàáëèöà 1}
+\section{Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° 1}
 \begin{longtable}{ccccc}
-    \multicolumn{5}{r}{Ïðîäîâæåííÿ íà íàñòóïí³é ñòîð³íö³}\\
+    \multicolumn{5}{r}{ÐŸÑ€Ð¾Ð´Ð¾Ð²Ð¶ÐµÐ½Ð½Ñ Ð½Ð° Ð½Ð°ÑÑ‚ÑƒÐ¿Ð½Ñ–Ð¹ ÑÑ‚Ð¾Ñ€Ñ–Ð½Ñ†Ñ–}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{3}{|m{8.1cm}|}{Ðàâ\textit{\textbf{í}}ûì îáðàç$_{\textit{\textbf{îì}}}$ ð$^{åà}$ëèçàöèÿ íàìå÷åííûõ ïëàíîâûõ çàäàíèé \textit{ïîçâîëÿåò} \textit{îöåíèòü} \textit{çíà÷åíèå} \textit{ôîðì} \textit{ðàçâèòèÿ}\textit{. }\textit{Çíà÷èìîñòü} \textit{ýòèõ} \textit{ïðîáëåì} \textit{\textbf{íàñòîëüêî}} \textit{\textbf{î÷åâèäíà}}\textit{\textbf{, }}\textit{\textbf{÷òî}} \textit{\textbf{äàëüíåéøåå}} \textit{\textbf{ðàçâèòèå}} \textbf{ðàçëè÷íûõ} \textbf{ôîðì} \textbf{äåÿòåëüíîñòè} \textbf{òðåáóþò} \textbf{îïðåäåëåíèÿ}\textbf{ è }\textbf{óòî÷íåíèÿ} \textbf{ïîçèöèé}, çàíèìàåìûõ ó÷àñòíèêàìè â îòíîøåíèè ïîñòàâëåííûõ çàäà÷. \underline{\textit{Çíà÷èìîñòü}} ýòèõ ïðîáëåì \sout{íàñòîëüêî}\sout{ }\sout{î÷åâèäíà}\sout{, }\sout{÷òî}\sout{ }\sout{íîâàÿ}\sout{ }\sout{ìîäåëü}\sout{ }\sout{\underline{îðãàíèçàöèîííîé}}\sout{ }\sout{äåÿòåëüíîñòè}\sout{ }\sout{ïîçâîëÿåò}\sout{ }\sout{îöåíèòü}\sout{ }\sout{çíà÷åíèå}\sout{ }\sout{íàïðàâëåíèé}\sout{ }\sout{ïðîãðåññèâíîãî}\sout{ }\sout{ðàçâèòèÿ}\sout{. }\sout{Òîâàðèùè}\sout{! }\sout{ïîñòîÿííîå} èíôîðìàöèîííî-ïðîïàãàíäèñòñêîå îáåñïå÷åíèå íàøåé äåÿòåëüíîñòè èãðàåò âàæíóþ ðîëü â ôîðìèðîâàíèè ôîðì ðàçâèòèÿ.\pol àâàâàâàâàâàâàâàâ}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{3\pol 4\pol 4\pol 4}\\
+\multicolumn{3}{|m{8.1cm}|}{Ð Ð°Ð²\textit{\textbf{Ð½}}Ñ‹Ð¼ Ð¾Ð±Ñ€Ð°Ð·$_{\textit{\textbf{Ð¾Ð¼}}}$ Ñ€$^{ÐµÐ°}$Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð½Ð°Ð¼ÐµÑ‡ÐµÐ½Ð½Ñ‹Ñ… Ð¿Ð»Ð°Ð½Ð¾Ð²Ñ‹Ñ… Ð·Ð°Ð´Ð°Ð½Ð¸Ð¹ \textit{Ð¿Ð¾Ð·Ð²Ð¾Ð»ÑÐµÑ‚} \textit{Ð¾Ñ†ÐµÐ½Ð¸Ñ‚ÑŒ} \textit{Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ} \textit{Ñ„Ð¾Ñ€Ð¼} \textit{Ñ€Ð°Ð·Ð²Ð¸Ñ‚Ð¸Ñ}\textit{. }\textit{Ð—Ð½Ð°Ñ‡Ð¸Ð¼Ð¾ÑÑ‚ÑŒ} \textit{ÑÑ‚Ð¸Ñ…} \textit{Ð¿Ñ€Ð¾Ð±Ð»ÐµÐ¼} \textit{\textbf{Ð½Ð°ÑÑ‚Ð¾Ð»ÑŒÐºÐ¾}} \textit{\textbf{Ð¾Ñ‡ÐµÐ²Ð¸Ð´Ð½Ð°}}\textit{\textbf{, }}\textit{\textbf{Ñ‡Ñ‚Ð¾}} \textit{\textbf{Ð´Ð°Ð»ÑŒÐ½ÐµÐ¹ÑˆÐµÐµ}} \textit{\textbf{Ñ€Ð°Ð·Ð²Ð¸Ñ‚Ð¸Ðµ}} \textbf{Ñ€Ð°Ð·Ð»Ð¸Ñ‡Ð½Ñ‹Ñ…} \textbf{Ñ„Ð¾Ñ€Ð¼} \textbf{Ð´ÐµÑÑ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚Ð¸} \textbf{Ñ‚Ñ€ÐµÐ±ÑƒÑŽÑ‚} \textbf{Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ñ}\textbf{ Ð¸ }\textbf{ÑƒÑ‚Ð¾Ñ‡Ð½ÐµÐ½Ð¸Ñ} \textbf{Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ð¹}, Ð·Ð°Ð½Ð¸Ð¼Ð°ÐµÐ¼Ñ‹Ñ… ÑƒÑ‡Ð°ÑÑ‚Ð½Ð¸ÐºÐ°Ð¼Ð¸ Ð² Ð¾Ñ‚Ð½Ð¾ÑˆÐµÐ½Ð¸Ð¸ Ð¿Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð½Ñ‹Ñ… Ð·Ð°Ð´Ð°Ñ‡. \underline{\textit{Ð—Ð½Ð°Ñ‡Ð¸Ð¼Ð¾ÑÑ‚ÑŒ}} ÑÑ‚Ð¸Ñ… Ð¿Ñ€Ð¾Ð±Ð»ÐµÐ¼ \sout{Ð½Ð°ÑÑ‚Ð¾Ð»ÑŒÐºÐ¾}\sout{ }\sout{Ð¾Ñ‡ÐµÐ²Ð¸Ð´Ð½Ð°}\sout{, }\sout{Ñ‡Ñ‚Ð¾}\sout{ }\sout{Ð½Ð¾Ð²Ð°Ñ}\sout{ }\sout{Ð¼Ð¾Ð´ÐµÐ»ÑŒ}\sout{ }\sout{\underline{Ð¾Ñ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾Ð¹}}\sout{ }\sout{Ð´ÐµÑÑ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚Ð¸}\sout{ }\sout{Ð¿Ð¾Ð·Ð²Ð¾Ð»ÑÐµÑ‚}\sout{ }\sout{Ð¾Ñ†ÐµÐ½Ð¸Ñ‚ÑŒ}\sout{ }\sout{Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ}\sout{ }\sout{Ð½Ð°Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ð¹}\sout{ }\sout{Ð¿Ñ€Ð¾Ð³Ñ€ÐµÑÑÐ¸Ð²Ð½Ð¾Ð³Ð¾}\sout{ }\sout{Ñ€Ð°Ð·Ð²Ð¸Ñ‚Ð¸Ñ}\sout{. }\sout{Ð¢Ð¾Ð²Ð°Ñ€Ð¸Ñ‰Ð¸}\sout{! }\sout{Ð¿Ð¾ÑÑ‚Ð¾ÑÐ½Ð½Ð¾Ðµ} Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾-Ð¿Ñ€Ð¾Ð¿Ð°Ð³Ð°Ð½Ð´Ð¸ÑÑ‚ÑÐºÐ¾Ðµ Ð¾Ð±ÐµÑÐ¿ÐµÑ‡ÐµÐ½Ð¸Ðµ Ð½Ð°ÑˆÐµÐ¹ Ð´ÐµÑÑ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚Ð¸ Ð¸Ð³Ñ€Ð°ÐµÑ‚ Ð²Ð°Ð¶Ð½ÑƒÑŽ Ñ€Ð¾Ð»ÑŒ Ð² Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ð¸ Ñ„Ð¾Ñ€Ð¼ Ñ€Ð°Ð·Ð²Ð¸Ñ‚Ð¸Ñ.\pol Ð°Ð²Ð°Ð²Ð°Ð²Ð°Ð²Ð°Ð²Ð°Ð²Ð°Ð²Ð°Ð²}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{3\pol 4\pol 4\pol 4}\\
 \hhline{-----}
 \multicolumn{1}{|>{\centering\arraybackslash}m{2.7cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}m{2.7cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}m{2.7cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{}&\multicolumn{1}{>{\centering\arraybackslash}m{2.8cm}|}{}\\
 \hhline{-----}
-\multicolumn{1}{|>{\centering\arraybackslash}m{2.7cm}|}{\multirow{4}{*}{\parbox{2.7cm}{ \centering 5\pol 5\pol 5\pol 5}}}&\multicolumn{2}{>{\centering\arraybackslash}m{5.4cm}|}{\textbf{àâàâ}}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{}\\
+\multicolumn{1}{|>{\centering\arraybackslash}m{2.7cm}|}{\multirow{4}{*}{\parbox{2.7cm}{ \centering 5\pol 5\pol 5\pol 5}}}&\multicolumn{2}{>{\centering\arraybackslash}m{5.4cm}|}{\textbf{Ð°Ð²Ð°Ð²}}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{}\\
 \hhline{|~|----}
-\multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}m{5.4cm}|}{À\pol \pol è}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{}\\
+\multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}m{5.4cm}|}{Ð\pol \pol Ð¸}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{}\\
 \hhline{|~|----}
 \multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}m{5.4cm}|}{}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{}\\
 \hhline{|~|----}
 \multicolumn{1}{|c|}{}&\multicolumn{2}{>{\centering\arraybackslash}m{5.4cm}|}{}&\multicolumn{2}{>{\centering\arraybackslash}m{5.6cm}|}{}\\
 \hhline{-----}
 \end{longtable}
-\section{Òàáëèöà 2}
+\section{Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° 2}
 \begin{longtable}{cccccccc}
-    \multicolumn{8}{r}{Ïðîäîâæåííÿ íà íàñòóïí³é ñòîð³íö³}\\
+    \multicolumn{8}{r}{ÐŸÑ€Ð¾Ð´Ð¾Ð²Ð¶ÐµÐ½Ð½Ñ Ð½Ð° Ð½Ð°ÑÑ‚ÑƒÐ¿Ð½Ñ–Ð¹ ÑÑ‚Ð¾Ñ€Ñ–Ð½Ñ†Ñ–}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{1}{|>{\centering\arraybackslash}m{2.9cm}|}{\multirow{10}{*}{\parbox{2.9cm}{ \centering dsds}}}&\multicolumn{1}{>{\raggedright\arraybackslash}m{0.6cm}|}{\multirow{3}{*}{\parbox{0.6cm}{1}}}&\multicolumn{2}{>{\centering\arraybackslash}m{3.5cm}|}{\multirow{2}{*}{\parbox{3.5cm}{ \centering 6}}}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.7cm}|}{}&\multicolumn{2}{>{\raggedright\arraybackslash}m{3.5cm}|}{\multirow{4}{*}{\parbox{3.5cm}{8}}}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.3cm}|}{\multirow{3}{*}{\parbox{1.3cm}{1}}}\\
+\multicolumn{1}{|>{\centering\arraybackslash}m{2.9cm}|}{\multirow{10}{*}{\parbox{2.9cm}{ \centering dsdsÂ  Î»}}}&\multicolumn{1}{>{\raggedright\arraybackslash}m{0.6cm}|}{\multirow{3}{*}{\parbox{0.6cm}{1}}}&\multicolumn{2}{>{\centering\arraybackslash}m{3.5cm}|}{\multirow{2}{*}{\parbox{3.5cm}{ \centering 6}}}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.7cm}|}{}&\multicolumn{2}{>{\raggedright\arraybackslash}m{3.5cm}|}{\multirow{4}{*}{\parbox{3.5cm}{8}}}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.3cm}|}{\multirow{3}{*}{\parbox{1.3cm}{1}}}\\
 \hhline{|~|~|~~|-~~|~|}
 \multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.7cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c|}{}\\
 \hhline{|~|~|---~~|~|}
@@ -53,7 +53,7 @@ top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
 \hhline{|~|----~~|-}
 \multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{0.6cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.7cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.7cm}|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.7cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{1.3cm}|}{}\\
 \hhline{|~|-------}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{0.6cm}|}{}&\multicolumn{3}{>{\raggedright\arraybackslash}m{5.2cm}|}{\multirow{3}{*}{\parbox{5.2cm}{4}}}&\multicolumn{3}{>{\raggedright\arraybackslash}m{4.8cm}|}{\multirow{3}{*}{\parbox{4.8cm}{2}}}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{0.6cm}|}{}&\multicolumn{3}{>{\raggedright\arraybackslash}m{5.2cm}|}{\multirow{3}{*}{\parbox{5.2cm}{4}}}&\multicolumn{3}{>{\centering\arraybackslash}m{4.8cm}|}{\multirow{3}{*}{\parbox{4.8cm}{ \centering 2}}}\\
 \hhline{|~|-~~~|~~~|}
 \multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{0.6cm}|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}\\
 \hhline{|~|-~~~|~~~|}
@@ -77,17 +77,17 @@ top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
 \hhline{--------}
 \end{longtable}
 
-\section{Òàáëèöà 3}
+\section{Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° 3}
 \begin{longtable}{ccccc}
-    \multicolumn{5}{r}{Ïðîäîâæåííÿ íà íàñòóïí³é ñòîð³íö³}\\
+    \multicolumn{5}{r}{ÐŸÑ€Ð¾Ð´Ð¾Ð²Ð¶ÐµÐ½Ð½Ñ Ð½Ð° Ð½Ð°ÑÑ‚ÑƒÐ¿Ð½Ñ–Ð¹ ÑÑ‚Ð¾Ñ€Ñ–Ð½Ñ†Ñ–}\\
     \endfoot
     \endlastfoot
     \hline
-\multicolumn{1}{|>{\raggedright\arraybackslash}m{2.8cm}|}{\multirow{3}{*}{\parbox{2.8cm}{Íîìåð\pol Ïàññàæèðñêîãî óðîâíÿ}}}&\multicolumn{3}{>{\raggedright\arraybackslash}m{8.2cm}|}{Êóëüòóðà êëåòîê}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{10}\\
+\multicolumn{1}{|>{\raggedright\arraybackslash}m{2.8cm}|}{\multirow{3}{*}{\parbox{2.8cm}{ÐÐ¾Ð¼ÐµÑ€\pol ÐŸÐ°ÑÑÐ°Ð¶Ð¸Ñ€ÑÐºÐ¾Ð³Ð¾ ÑƒÑ€Ð¾Ð²Ð½Ñ}}}&\multicolumn{3}{>{\raggedright\arraybackslash}m{8.2cm}|}{ÐšÑƒÐ»ÑŒÑ‚ÑƒÑ€Ð° ÐºÐ»ÐµÑ‚Ð¾Ðº}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{10}\\
 \hhline{|~|----}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{\multirow{2}{*}{\parbox{2.7cm}{Äàííûå}}}&\multicolumn{2}{>{\raggedright\arraybackslash}m{5.5cm}|}{Èíôåêö. àêòèâíîñòü}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{\multirow{2}{*}{\parbox{2.7cm}{Äàííûå}}}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{\multirow{2}{*}{\parbox{2.7cm}{Ð”Ð°Ð½Ð½Ñ‹Ðµ}}}&\multicolumn{2}{>{\raggedright\arraybackslash}m{5.5cm}|}{Ð˜Ð½Ñ„ÐµÐºÑ†. Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚ÑŒ}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{\multirow{2}{*}{\parbox{2.7cm}{Ð”Ð°Ð½Ð½Ñ‹Ðµ}}}\\
 \hhline{|~|~|--~|}
-\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{ÔÎÅ}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{ëîã}&\multicolumn{1}{c|}{}\\
+\multicolumn{1}{|c|}{}&\multicolumn{1}{c|}{}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{Ð¤ÐžÐ•}&\multicolumn{1}{>{\raggedright\arraybackslash}m{2.7cm}|}{Ð»Ð¾Ð³}&\multicolumn{1}{c|}{}\\
 \hhline{-----}
 \end{longtable}
 

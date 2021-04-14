@@ -401,7 +401,7 @@ class Generation_latex(Generation_latex_word):
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.extend(self.find_parameter_to_command_to_latex_file(line))
                         self.list_new_table.clear()
-            MyFile = open('test_table.tex', 'w')
+            MyFile = open('test_table.tex', 'w',  encoding='utf-8')
             self.list_start_file = map(lambda x: x + '\n', self.list_start_file)
             MyFile.writelines(self.list_start_file)
             MyFile.close()
