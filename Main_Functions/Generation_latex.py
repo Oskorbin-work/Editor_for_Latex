@@ -43,11 +43,11 @@
 
 Что еще нужно сделать:
 1) Специальная команда в начале tex-файл, что выводит необходимые команды в начале предложения. После begin{document}
-должна оставаться. Также без этого не должны работать генератор.
-2) Подключение ворд-документа.
-3) Вывод ячеек в любой части латеха. Просто как текст.
+должна оставаться. Также без этого не должны работать генератор. +
+2) Подключение ворд-документа.Подключать можно где угодно, но команда должна занимать одну строку. +
+3) Вывод ячеек в любой части латеха. Просто как текст. +
 4) Разработка несколько режимов генератора:
--- Вывод таблицы как можно больше похоже на оригинал. Ха-ха. Original
+-- Вывод таблицы как можно больше похоже на оригинал. Ха-ха. Original +
 -- Вывод таблицы как можно больше похоже на оригинал, но добавляясь и в тех-файл. Команда генерации должна быть выше
 таблицы, но выключена. Insert_Original
  Пример: (%Disable_Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 1})
@@ -89,7 +89,7 @@ import re
 
 
 class Generation_latex_word:
-    def search_docx_file(self, name_address=None, name_table=None):  # Search file-docx
+    def search_docx_file(self, name_address=None, name_table=None, command_status = "Original"):  # Search file-docx
         # Проверка на то что пользователь не указал данные.
         if name_address == None:
             return ("Не вказана назва файлу!")
@@ -102,18 +102,18 @@ class Generation_latex_word:
         if os.path.isfile(self.name_address):
             self.doc = docx.Document(self.name_address)
             self.properties = self.doc.core_properties  # Сами еще не решили зачем это надо
-            return self.search_docx_tables()  # Запускаем поиск таблицы
+            return self.search_docx_tables(command_status)  # Запускаем поиск таблицы
         else:  # На случай, если файл не нашелся.
             return "Файл не знайдено"
 
-    def search_docx_tables(self):
+    def search_docx_tables(self,command_status):
         i = 0  # Определеяет номер необходимой таблицы.
         find_table = False  # Маркер нахождения таблицы
         for tables in self.doc.tables:  # Находим таблицу
             if find_table == True:  # Нашли таблицу!
                 break
             if (tables.rows[0].cells[0].text == self.name_table):  # Ищем
-                return self.Assembly_shop(i)
+                return self.Assembly_shop(i,command_status)
             else:
                 i += 1
         if find_table == False:  # Если таблица не нашлась
@@ -137,7 +137,7 @@ class Generation_latex_word:
             return string
         else:
             return string
-    def every_row(self):
+    def every_row(self,command_status):
         map_table = [[0] * len(self.name_table.columns) for i in range(len(self.name_table.rows))]
         for row in range(len(self.name_table.rows)):
             if row == 0: pass
@@ -185,9 +185,9 @@ class Generation_latex_word:
                                     break
                                 row_merge += 1
                             if (column+f == len(self.name_table.columns)):
-                                string += "\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ self.return_cells(row, column) + "}}}"
+                                string += "\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ self.return_cells(row, column,command_status) + "}}}"
                             else:
-                                string += "\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column) + self.return_cells(row, column) + "}}}" + "&"
+                                string += "\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column) + self.return_cells(row, column,command_status) + "}}}" + "&"
                             #-----------------------
                         elif row < (len(self.name_table.rows) - 1) \
                                 and self.merge_cells_word(row,column) == \
@@ -209,12 +209,12 @@ class Generation_latex_word:
                                 map_table_hline[column+f-1] = "|"
                             if ((column + f) == len(self.name_table.columns)):
                                 string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ \
-                                          self.return_cells(row,column) + "}}}"
+                                          self.return_cells(row,column,command_status) + "}}}"
                             elif (column == 0):
                                 string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ \
-                                          self.return_cells(row,column) + "}}}" + "&"
+                                          self.return_cells(row,column,command_status) + "}}}" + "&"
                             else:
-                                string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ self.return_cells(row,column) + "}}}" + "&"
+                                string += "\\multirow{" + str(c) + "}{*}{" + self.align_multirow(row, column)+ self.return_cells(row,column,command_status) + "}}}" + "&"
                         else:
                             while (k + column) < (len(self.name_table.columns) - 1):
                                 if self.merge_cells_word(row, k + column) == self.merge_cells_word(row,
@@ -233,7 +233,7 @@ class Generation_latex_word:
                             border_right = "|"
                             map_table_hline[column + f-1] = "|"
                             string += "\\multicolumn{" + str(f) + "}{"+ border_left +self.paragraphs_alignment_cell(row,column) + border_right+"}{" + \
-                                          self.return_cells(row,column) + "}" + ampersand
+                                          self.return_cells(row,column,command_status) + "}" + ampersand
                     else:
                         # map-table == 1
                         if column + f == len(self.name_table.columns):  # Last cell in row
@@ -274,6 +274,7 @@ class Generation_latex(Generation_latex_word):
         self.name_table = ""
         self.list_start_file = list()
         self.list_new_table = list()
+        self.list_docx_file = list()
 
     def merge_cells_word(self, row, column):  #
         try:
@@ -351,7 +352,7 @@ class Generation_latex(Generation_latex_word):
             string = string.replace(mas_a[i],mas_b[i])
         return string
 
-    def return_cells(self,row,column):
+    def return_cells(self,row,column,command_status):
         # Ширина каждой ячейки
         string_p = ""
         string_r = ""
@@ -380,7 +381,11 @@ class Generation_latex(Generation_latex_word):
             string_p += string_r + "\pol "
         string_p = string_p[0:-5]
         string_p += ""
-        return string_p
+        if (command_status == "Original"):
+            return string_p
+        else:
+            return  self.name_table.cell(row, column).text
+
 
     def commands_to_generation(self, status):
         if status == "True":
@@ -406,15 +411,16 @@ class Generation_latex(Generation_latex_word):
         self.list_new_table.append("    \\endlastfoot")
         self.list_new_table.append("    \\hline")
 
-    def Assembly_shop(self, number_table):  # Сборочный цех. Тут собирается уже latex - таблица
+    def Assembly_shop(self, number_table, command_status):  # Сборочный цех. Тут собирается уже latex - таблица
         self.name_table = self.doc.tables[number_table]
         self.first_part_table()
-        self.every_row()
+        self.every_row(command_status)
         self.list_new_table.append("\\end{longtable}")
         if self.table_font_size() == "True": self.list_new_table.append("\\normalsize")
         return self.list_new_table
-
-    def find_parameter_to_command_to_latex_file(self, structure_command):  # разбивает команду на параметры
+    def find_parameter_to_command_to_latex_file(self, structure_command):  # разбивает команду Generationlatexpython на параметры
+        status_parameters = "False"
+        names_parameters = ["Original", "Insert_Original", "Only_Text", "Only_Cells"]
         # Баг: Что если параметров будет не правильное количество?
         # №1 параметр. Адрес ворда
         # Баг: Если в название папки или файла будет запятая, то это сломает абсолютно все. Исправить бы
@@ -423,10 +429,74 @@ class Generation_latex(Generation_latex_word):
         name_table = re.search(r'(?<=\,)([\s\S]+?)(?=\})', structure_command)
         # Определяет формат текущего документа для дальнейшего распределения документа по классу: Ексель или Ворд.
         name_address_data = re.search(r'[^.]+$', name_address.group(0))
+        for name in names_parameters:
+            name = r'(?<=\{)(' + name + r')(?=\})'
+            try:
+                command_status = re.search(name, structure_command)
+                command_status = command_status.group(0)
+                break
+            except AttributeError:
+                command_status = "Original"
         if name_address_data.group(0) == "docx":
-            return self.search_docx_file(name_address.group(0), name_table.group(0))
+            return self.search_docx_file(name_address.group(0), name_table.group(0),command_status)
         else:
             return "Формат документа може бути тільки docx"
+
+    def find_parameter_to_command_to_IncludeDocx(self, structure_command):
+        name_address = re.search(r'(?<=\{)([\s\S]+?)(?=\})', structure_command)
+        name_address_data = re.search(r'[^.]+$', name_address.group(0))
+        if name_address_data.group(0) == "docx":
+             self.list_docx_file.append(name_address.group(0))
+             return structure_command
+        else:
+             return structure_command + " Формат документа може бути тільки docx" # Придумать чет по-лучше.
+
+    def return_many_cells(self, structure_command):
+        my = "True"
+        table_string = "Впишить назву документа за допомогою команди %IncludeDocx{Назва_файлу}"
+        try:
+            string = re.search(r'Cell\(([\s\S]+?),([\s\S]+?),([\s\S]+?)\)', structure_command).group(0)
+        except AttributeError:
+            return structure_command + "Attribute_error"
+        while my == "True":
+            name_table = re.search(r'(?<=\()([\s\S]+?)(?=,)', string).group(0)
+            #print(name_table)
+            row = re.search(r'(?<=,)([\s\S]+?)(?=,)', string).group(0)
+            #print(row)
+            column = re.search(r'(?<=,)([\s\S]+?)(?=\))', string).group(0)
+            column = re.search(r'(?<=,)([\s\S]+?)', column).group(0)
+            #print(column)
+            a = "Cell_disable(" + name_table + "," + row + "," + column + ") - "
+            for docx_file in self.list_docx_file:
+                #Находим файл
+                if os.path.isfile(docx_file):
+                    doc = docx.Document(docx_file)
+                else:
+
+                    table_string = a + "Впишить назву документа за допомогою команди %IncludeDocx{Назва_файлу}"
+                #Находим табличку
+                i = 0  # Определеяет номер необходимой таблицы.
+                find_table = False  # Маркер нахождения таблицы
+                for tables in doc.tables:  # Находим таблицу
+                    if find_table == True:  # Нашли таблицу!
+                        break
+                    if (tables.cell(0,0).text == name_table):  # Ищем
+                        find_table = True
+                        if (int(row) < len(tables.rows) and int(row)>=0 and int(column)<len(tables.columns) and int(column)>=0):
+                            table_string = self.special_symbols (tables.cell(int(row),int(column)).text)
+                        else:
+                            table_string = a + "Координати комірки вказані не вірно"
+                    else:
+                        i += 1
+                if find_table == False:  # Если таблица не нашлась
+                    table_string  = a + "Таблиця ( " + name_table+ ")не знайдена по адресу (" + str (docx_file) + ") не знайдена"
+
+            structure_command = structure_command.replace(string,table_string)
+            if str(re.search(r'Cell\(([\s\S]+?),([\s\S]+?),([\s\S]+?)\)',structure_command)) == "None":
+                my = "False"
+            else:
+                string = re.search(r'Cell\(([\s\S]+?),([\s\S]+?),([\s\S]+?)\)', structure_command).group(0)
+        return structure_command
 
     def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
         find_begin_document = "True"
@@ -434,17 +504,27 @@ class Generation_latex(Generation_latex_word):
         if os.path.isfile(name_address_tex_file):
             with open(name_address_tex_file, 'r+', encoding='utf-8') as file:
                 for line in file:
-                    if re.search(r'\\begin{document}',line):
+                    if re.search(r'\\begin{document}',line):  # Маркер того, что начался основной документ.
                         find_begin_document = "False"
-                        self.list_start_file.append("\\begin{document}")
-                    elif re.search(r'%CommandsGenerationlatexpython',line):
+                        line = re.sub("^\s+|\n|\r|\s+$", '', line)
+                        self.list_start_file.append(line)
+                    elif (re.search(r'%IncludeDocx{([\s\S]+?)}', line)): # Составлення списку docx-file
+                        line = re.sub("^\s+|\n|\r|\s+$", '', line)
+                        self.list_start_file.append(self.find_parameter_to_command_to_IncludeDocx(line))
+                    elif re.search(r'%CommandsGenerationlatexpython',line):  # Добавление команд для генератора.
                         self.commands_to_generation(find_begin_document)
+                        find_begin_document = "False"
                         status_generation = "True"
-                    elif (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) and status_generation == "True":
+                    elif re.search(r'Cell\(([\s\S]+?),([\s\S]+?),([\s\S]+?)\)',line):
+                        line = self.return_many_cells(line)
+                        line = re.sub("^\s+|\n|\r|\s+$", '', line)
+                        self.list_start_file.append(line)
+                    elif (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}{([\s\S]+?)}', line))\
+                            and status_generation == "True":  # Находим непосредственно команду для генерации таблиц.
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.extend(self.find_parameter_to_command_to_latex_file(line))
                         self.list_new_table.clear()
-                    else: #Если это строка без специальных команд
+                    else:  # Если это строка без специальных команд
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.append(line)
             MyFile = open('test_table.tex', 'w',  encoding='utf-8')
