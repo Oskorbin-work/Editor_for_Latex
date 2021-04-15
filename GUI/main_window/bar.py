@@ -4,6 +4,7 @@
 from PyQt5.QtCore import QUrl
 
 import data.XML.work_with_XML as XML  # Work with XML-file
+import Main_Functions.Generation_latex as latex
 # -----------------------------------------------------------
 # PyQt 5.Initiate structure Main window and GUI
 # -----------------------------------------------------------
@@ -25,12 +26,15 @@ class Bar:
         self.save_as_button_bar()
         self.run_latex_to_pdf_button_bar()
         self.exit_button_bar()
+        self.run_latex_to_pdf_button_bar_disable()
 
     def bar_category_fileMenu(self):  # structure category "File menu". Initiate into main.py!
         #fileMenu = self.menubar.addMenu('&File')
         fileMenu = self.menubar.addMenu(XML.get_attr_XML('file'))
+        run = self.menubar.addMenu(XML.get_attr_XML('run'))
         fileMenu.addAction(self.newAction)
-        fileMenu.addAction(self.RunAction)
+        run.addAction(self.RunAction)
+        run.addAction(self.RunAction_disable)
         fileMenu.addAction(self.openAction)
         fileMenu.addAction(self.saveAction)
         fileMenu.addAction(self.saveAsAction)
@@ -59,9 +63,14 @@ class Bar:
         self.saveAsAction.triggered.connect(self.save_file_as)
 
     def run_latex_to_pdf_button_bar(self):  # Button -- convert current file.tex to file.pdf: tex to pdf
-        self.RunAction = QAction(XML.get_attr_XML('file-run-latex-to-pdf'), self)
-        self.RunAction.setShortcut(XML.get_hot_keyboard_XML('file-run-latex-to-pdf'))
+        self.RunAction = QAction(XML.get_attr_XML('run-enable'), self)
+        self.RunAction.setShortcut(XML.get_hot_keyboard_XML('run-enable'))
         self.RunAction.triggered.connect(self.run_compile)
+
+    def run_latex_to_pdf_button_bar_disable(self):  # Button -- convert current file.tex to file.pdf: tex to pdf
+        self.RunAction_disable = QAction(XML.get_attr_XML('run-disable'), self)
+        self.RunAction_disable.setShortcut(XML.get_hot_keyboard_XML('run-disable'))
+        self.RunAction_disable.triggered.connect(self.run_compile_disable)
 
     def exit_button_bar(self):  # Button -- exit program
         self.exitAction = QAction(XML.get_attr_XML('file-exit'), self)
@@ -109,12 +118,29 @@ class Bar:
                 f.write(my_text)
 
     def run_compile(self):  # convert current file.tex to file.pdf: tex to pdf
-
+        app = latex.Generation_latex()
         self.save_file()
+        app.find_command_to_latex_file(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex","enable")
         #print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
         os.chdir(XML.get_osnova_XML('tec-address') + '/')
+        with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", encoding='utf-8') as f:
+            self.f_label.setPlainText(f.read())
         os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+        #self.open_file()
         self.main_window_view_pdf_val.load( QUrl("file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".pdf"))
+
+    def run_compile_disable(self):  # convert current file.tex to file.pdf: tex to pdf
+        app = latex.Generation_latex()
+        self.save_file()
+        app.find_command_to_latex_file(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex","disable")
+        #print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+        os.chdir(XML.get_osnova_XML('tec-address') + '/')
+
+        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file')+'_test' + ".tex")
+        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file')+'_test' + ".tex")
+        #self.open_file()
+        self.main_window_view_pdf_val.load( QUrl("file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') +'_test'+ ".pdf"))
 
     # The program is closed by the built-in function
 

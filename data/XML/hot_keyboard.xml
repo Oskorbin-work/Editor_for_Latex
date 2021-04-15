@@ -5,7 +5,8 @@
 <file-open>Ctrl+O</file-open>
 <file-save>Ctrl+S</file-save>
 <file-save-as>ALT+S</file-save-as>
-<file-run-latex-to-pdf>Ctrl+R</file-run-latex-to-pdf>
+<run-enable>Ctrl+R</run-enable>
+<run-disable>Ctrl+Alt+R</run-disable>
 <file-exit>Ctrl+Q</file-exit>
 <!--Exit XML-->
 </data>

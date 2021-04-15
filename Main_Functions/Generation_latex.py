@@ -48,9 +48,6 @@
 3) Вывод ячеек в любой части латеха. Просто как текст. +
 4) Разработка несколько режимов генератора:
 -- Вывод таблицы как можно больше похоже на оригинал. Ха-ха. Original +
--- Вывод таблицы как можно больше похоже на оригинал, но добавляясь и в тех-файл. Команда генерации должна быть выше
-таблицы, но выключена. Insert_Original
- Пример: (%Disable_Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 1})
 -- Вывод таблицы, где Текст без форматирования. Only_Text +
 -- Вывод таблицы, где вместо текста команды для каждой ячейки. Only_Cells +
 5) Внедрение генератора в основную таблицу.
@@ -86,7 +83,7 @@
 import os
 import docx
 import re
-
+import data.XML.work_with_XML as XML
 
 class Generation_latex_word:
     def search_docx_file(self, name_address=None, name_table=None, command_status = "Original"):  # Search file-docx
@@ -382,7 +379,7 @@ class Generation_latex(Generation_latex_word):
             string_p += string_r
             if command_status == "Original":
                 string_p += "\\pol "
-        string_p = string_p[0:-5]
+                string_p = string_p[0:-5]
         string_p += ""
         if command_status == "Original" or command_status == "Only_Text":
             return string_p
@@ -443,6 +440,7 @@ class Generation_latex(Generation_latex_word):
                 break
             except AttributeError:
                 command_status = "Original"
+        self.list_new_table.append('%Generationlatexpython_Disable{'+name_address.group(0) + "," + name_table.group(0) + "}{" + command_status + "}")
         if name_address_data.group(0) == "docx":
             return self.search_docx_file(name_address.group(0), name_table.group(0),command_status)
         else:
@@ -504,7 +502,7 @@ class Generation_latex(Generation_latex_word):
                 string = re.search(r'Cell\(([\s\S]+?),([\s\S]+?),([\s\S]+?)\)', structure_command).group(0)
         return structure_command
 
-    def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
+    def find_command_to_latex_file(self, name_address_tex_file,status_run):  # Поиск команды.
         find_begin_document = "True"
         status_generation = "False"
         if os.path.isfile(name_address_tex_file):
@@ -533,7 +531,11 @@ class Generation_latex(Generation_latex_word):
                     else:  # Если это строка без специальных команд
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.append(line)
-            MyFile = open('test_table.tex', 'w',  encoding='utf-8')
+            if (status_run == "enable"):
+                file_name = XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex"
+            else:
+                file_name = XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + '_test' + ".tex"
+            MyFile = open(file_name, 'w',  encoding='utf-8')
             self.list_start_file = map(lambda x: x + '\n', self.list_start_file)
             MyFile.writelines(self.list_start_file)
             MyFile.close()

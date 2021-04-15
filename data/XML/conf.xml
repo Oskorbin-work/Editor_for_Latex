@@ -7,7 +7,9 @@
 <file-open>Open</file-open>
 <file-save>Save</file-save>
 <file-save-as>Save as</file-save-as>
-<file-run-latex-to-pdf>Run</file-run-latex-to-pdf>
+<run-enable>Run-enable</run-enable>
+    <run-disable>Run-disable</run-disable>
 <file-exit>Exit</file-exit>
+<run>Run</run>
 <!--Exit XML-->
 </data>
