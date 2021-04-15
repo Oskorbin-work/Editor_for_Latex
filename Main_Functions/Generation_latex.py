@@ -430,6 +430,7 @@ class Generation_latex(Generation_latex_word):
 
     def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
         find_begin_document = "True"
+        status_generation = "False"
         if os.path.isfile(name_address_tex_file):
             with open(name_address_tex_file, 'r+', encoding='utf-8') as file:
                 for line in file:
@@ -438,13 +439,14 @@ class Generation_latex(Generation_latex_word):
                         self.list_start_file.append("\\begin{document}")
                     elif re.search(r'%CommandsGenerationlatexpython',line):
                         self.commands_to_generation(find_begin_document)
-                    elif (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) is None:
-                        line = re.sub("^\s+|\n|\r|\s+$", '', line)
-                        self.list_start_file.append(line)
-                    else:
+                        status_generation = "True"
+                    elif (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) and status_generation == "True":
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.extend(self.find_parameter_to_command_to_latex_file(line))
                         self.list_new_table.clear()
+                    else: #Если это строка без специальных команд
+                        line = re.sub("^\s+|\n|\r|\s+$", '', line)
+                        self.list_start_file.append(line)
             MyFile = open('test_table.tex', 'w',  encoding='utf-8')
             self.list_start_file = map(lambda x: x + '\n', self.list_start_file)
             MyFile.writelines(self.list_start_file)
