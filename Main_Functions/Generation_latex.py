@@ -39,6 +39,21 @@
 начинает не очень адекватно выводиться и может вывестись весь в одну строку.
 15) Табуляция в таблицах. Решено было пропустить.
 16) Междустрочный интервал. Наследуется от латеха.
+17) Специальные символы латеха обрабатываются
+
+Что еще нужно сделать:
+1) Специальная команда в начале tex-файл, что выводит необходимые команды в начале предложения. После begin{document}
+должна оставаться. Также без этого не должны работать генератор.
+2) Подключение ворд-документа.
+3) Вывод ячеек в любой части латеха. Просто как текст.
+4) Разработка несколько режимов генератора:
+-- Вывод таблицы как можно больше похоже на оригинал. Ха-ха. Original
+-- Вывод таблицы как можно больше похоже на оригинал, но добавляясь и в тех-файл. Команда генерации должна быть выше
+таблицы, но выключена. Insert_Original
+ Пример: (%Disable_Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 1})
+-- Вывод таблицы, где Текст без форматирования. Only_Text
+-- Вывод таблицы, где вместо текста команды для каждой ячейки. Only_Cells
+5) Внедрение генератора в основную таблицу.
 """
 """
 Примечание:
@@ -328,15 +343,23 @@ class Generation_latex(Generation_latex_word):
             return "False"
         else:
             return "True"
+
+    def special_symbols(self, string):
+        mas_a = ['\\','#','$','%','^', '&', '_', '{","}','~']
+        mas_b = ['\\textbackslash','\\#','\\$','\\%','\\textasciicircum', '\\&', '\\_', '\\{","\\}','\\textasciitilde']
+        for i in range(len(mas_a)):
+            string = string.replace(mas_a[i],mas_b[i])
+        return string
+
     def return_cells(self,row,column):
         # Ширина каждой ячейки
         string_p = ""
         string_r = ""
         for paragraph in self.name_table.cell(row, column).paragraphs:
             string_r = ""
-
             for run in paragraph.runs:
                 string_rr = run.text
+                string_rr = self.special_symbols(string_rr)
                 math_first = ""
                 math_formula = ""
                 math_last = ""
@@ -358,6 +381,21 @@ class Generation_latex(Generation_latex_word):
         string_p = string_p[0:-5]
         string_p += ""
         return string_p
+
+    def commands_to_generation(self, status):
+        if status == "True":
+            self.list_start_file.append("\\usepackage{longtable}  % Довгі таблиці")
+            self.list_start_file.append("\\usepackage{multirow} % Об'єднання через рядки")
+            self.list_start_file.append("\\usepackage{hhline} % Міжрядкова лінія")
+            self.list_start_file.append("\\usepackage{array} % Вирівнювання")
+            self.list_start_file.append("\\usepackage[normalem]{ulem} % Закреслення тексту")
+            self.list_start_file.append("\\newcommand{\pol} % Для переносів")
+            self.list_start_file.append("{")
+            self.list_start_file.append(" ")
+            self.list_start_file.append(" ")
+            self.list_start_file.append("}")
+        else:
+            self.list_start_file.append("%CommandsGenerationlatexpython")
 
     def first_part_table(self):  #
         if self.table_font_size() == "True": self.list_new_table.append("\\small")
@@ -391,10 +429,16 @@ class Generation_latex(Generation_latex_word):
             return "Формат документа може бути тільки docx"
 
     def find_command_to_latex_file(self, name_address_tex_file):  # Поиск команды.
+        find_begin_document = "True"
         if os.path.isfile(name_address_tex_file):
             with open(name_address_tex_file, 'r+', encoding='utf-8') as file:
                 for line in file:
-                    if (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) is None:
+                    if re.search(r'\\begin{document}',line):
+                        find_begin_document = "False"
+                        self.list_start_file.append("\\begin{document}")
+                    elif re.search(r'%CommandsGenerationlatexpython',line):
+                        self.commands_to_generation(find_begin_document)
+                    elif (re.search(r'%Generationlatexpython{([\s\S]+?),([\s\S]+?)}', line)) is None:
                         line = re.sub("^\s+|\n|\r|\s+$", '', line)
                         self.list_start_file.append(line)
                     else:
