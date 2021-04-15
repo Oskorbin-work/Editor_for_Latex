@@ -51,8 +51,8 @@
 -- Вывод таблицы как можно больше похоже на оригинал, но добавляясь и в тех-файл. Команда генерации должна быть выше
 таблицы, но выключена. Insert_Original
  Пример: (%Disable_Generationlatexpython{D:\Учеба\Диплом\Editor_for_Latex\Main_Functions\demo.docx,Таблица 1})
--- Вывод таблицы, где Текст без форматирования. Only_Text
--- Вывод таблицы, где вместо текста команды для каждой ячейки. Only_Cells
+-- Вывод таблицы, где Текст без форматирования. Only_Text +
+-- Вывод таблицы, где вместо текста команды для каждой ячейки. Only_Cells +
 5) Внедрение генератора в основную таблицу.
 """
 """
@@ -372,17 +372,23 @@ class Generation_latex(Generation_latex_word):
                     math_first = "$"
                     math_formula = "^{"
                     math_last = "}$"
-                if string_rr != (" " or ". "):
+                if string_rr != (" " or ". ") and command_status == "Original":
                     string_rr = self.run_bold(string_rr, str(run.bold))
                     string_rr = self.run_italic(string_rr, str(run.italic))
-                string_rr = self.run_underline(string_rr, str(run.underline))
-                string_rr = self.run_font_strike(string_rr, str(run.font.strike))
+                if command_status == "Original":
+                    string_rr = self.run_underline(string_rr, str(run.underline))
+                    string_rr = self.run_font_strike(string_rr, str(run.font.strike))
                 string_r += math_first + math_formula + string_rr + math_last
-            string_p += string_r + "\pol "
+            string_p += string_r
+            if command_status == "Original":
+                string_p += "\\pol "
         string_p = string_p[0:-5]
         string_p += ""
-        if (command_status == "Original"):
+        if command_status == "Original" or command_status == "Only_Text":
             return string_p
+        elif command_status == "Only_Cells":
+            a = " Cell(" + self.name_table.cell(0, 0).text + "," + str(row) + "," + str(column) + ") "
+            return a
         else:
             return  self.name_table.cell(row, column).text
 
