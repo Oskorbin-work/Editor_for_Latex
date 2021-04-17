@@ -7,8 +7,8 @@
 <file-open>Open</file-open>
 <file-save>Save</file-save>
 <file-save-as>Save as</file-save-as>
-<run-enable>Run-enable</run-enable>
-    <run-disable>Run-disable</run-disable>
+<run-enable>Run-з заміною команд</run-enable>
+    <run-disable>Run-без заміни команд</run-disable>
 <file-exit>Exit</file-exit>
 <run>Run</run>
 <!--Exit XML-->

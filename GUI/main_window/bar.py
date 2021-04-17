@@ -136,11 +136,10 @@ class Bar:
         app.find_command_to_latex_file(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex","disable")
         #print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
         os.chdir(XML.get_osnova_XML('tec-address') + '/')
-
-        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file')+'_test' + ".tex")
-        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file')+'_test' + ".tex")
+        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file')+'_enable' + ".tex")
+        os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file')+'_enable' + ".tex")
         #self.open_file()
-        self.main_window_view_pdf_val.load( QUrl("file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') +'_test'+ ".pdf"))
+        self.main_window_view_pdf_val.load( QUrl("file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') +'_enable'+ ".pdf"))
 
     # The program is closed by the built-in function
 
