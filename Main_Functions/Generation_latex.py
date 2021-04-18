@@ -419,6 +419,12 @@ class Generation_latex(Generation_latex_word):
 
     def Assembly_shop(self, number_table, command_status):  # Сборочный цех. Тут собирается уже latex - таблица
         self.name_table = self.doc.tables[number_table]
+        try:
+            for row in range(len(self.name_table.rows)):
+                for column in range(len(self.name_table.columns)):
+                    self.merge_cells_word(row, column)
+        except (IndexError, AttributeError):
+            return "Таблиця має не правильну структуру"
         self.first_part_table()
         self.every_row(command_status)
         self.list_new_table.append("\\end{tabular}")
@@ -428,9 +434,7 @@ class Generation_latex(Generation_latex_word):
     def find_parameter_to_command_to_latex_file(self, structure_command):  # разбивает команду Generationlatexpython на параметры
         status_parameters = "False"
         names_parameters = ["Original", "Insert_Original", "Only_Text", "Only_Cells"]
-        # Баг: Что если параметров будет не правильное количество?
         # №1 параметр. Адрес ворда
-        # Баг: Если в название папки или файла будет запятая, то это сломает абсолютно все. Исправить бы
         name_address = re.search(r'(?<=\{)([\s\S]+?)(?=\,)', structure_command)
         # №2 параметр. Имя таблицы
         name_table = re.search(r'(?<=\,)([\s\S]+?)(?=\})', structure_command)

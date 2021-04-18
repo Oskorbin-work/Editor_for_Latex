@@ -17,6 +17,7 @@ from PyQt5 import QtWebEngineWidgets
 # -----------------------------------------------------------
 import sys # Initiate project into operating system
 from distutils.spawn import find_executable
+import sqlite3
 
 
 class Error_latex(QMainWindow, Bar):
@@ -53,8 +54,17 @@ class Main_windows(QMainWindow, Bar):
         self.setWindowTitle(XML.get_attr_XML('name-title'))
         self.showMaximized()
 
+    def on_select(self):
+        s = "fsds"
+        f = str(self.f_label.textCursor().selectedText())
+        if (f == "PDF"):
+            self.f_label.setToolTip(s)
+        else:
+            self.f_label.setToolTip(str(self.f_label.textCursor().selectedText()))
+
     def main_text_field(self):  # place to tex-file;
         self.f_label = QTextEdit(self)
+        self.f_label.selectionChanged.connect(self.on_select)
         # open tex-file when open program
         if XML.get_osnova_XML('tec-address') != "" and XML.get_osnova_XML('tec-name-file') != "":
             with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex",
