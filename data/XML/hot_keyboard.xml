@@ -8,5 +8,6 @@
 <run-enable>Ctrl+R</run-enable>
 <run-disable>Ctrl+Alt+R</run-disable>
 <file-exit>Ctrl+Q</file-exit>
+    <help>Ctrl+H</help>
 <!--Exit XML-->
 </data>

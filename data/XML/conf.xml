@@ -2,14 +2,16 @@
 <!--name program-->
 <name-title>Editor_latex</name-title>
 <!--File buttons-->
-<file>File</file>
-<file-new>New</file-new>
-<file-open>Open</file-open>
-<file-save>Save</file-save>
-<file-save-as>Save as</file-save-as>
-<run-enable>Run-з заміною команд</run-enable>
-    <run-disable>Run-без заміни команд</run-disable>
-<file-exit>Exit</file-exit>
-<run>Run</run>
+<file>Файл</file>
+<file-new>Новий файл...</file-new>
+<file-open>Відкрити</file-open>
+<file-save>Зберегти</file-save>
+<file-save-as>Зберегти як</file-save-as>
+<run-enable>Запустити-з заміною команд</run-enable>
+    <run-disable>Запустити-без заміни команд</run-disable>
+    <help>Допомога</help>
+        <help-help>Допомога</help-help>
+<file-exit>Вихід</file-exit>
+<run>Запуск</run>
 <!--Exit XML-->
 </data>
