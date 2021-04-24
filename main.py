@@ -2,7 +2,8 @@
 # Codes other files project
 # -----------------------------------------------------------
 from GUI.main_window.bar import * # Initiate bar-structure
-
+from Main_Functions.Mylighterliter import * # Initiate Highlight text
+from Other_Functions.Error_install_latex import * #If latex-dist not installed
 # -----------------------------------------------------------
 # PyQt 5.Initiate structure Main window and GUI
 # -----------------------------------------------------------
@@ -11,66 +12,12 @@ from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5 import QtWebEngineWidgets
-from PyQt5.Qt import QSyntaxHighlighter, QRegularExpression
 # -----------------------------------------------------------
 # Other library
 # -----------------------------------------------------------
 import sys # Initiate project into operating system
-from distutils.spawn import find_executable
-import sqlite3
-
-
-class MyHighlighter(QSyntaxHighlighter):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.regexp_by_format = dict()
-
-        char_format = QTextCharFormat()
-        char_format.setForeground(Qt.blue)
-        self.regexp_by_format[r'\\[^()({|[|}|\]|\s)]+'] = char_format
-
-        char_format = QTextCharFormat()
-        char_format.setForeground(Qt.darkCyan)
-        self.regexp_by_format[r'\[[^()[^\\]}]+[^\\]\]'] = char_format
-
-        char_format = QTextCharFormat()
-        char_format.setForeground(Qt.darkGreen)
-        self.regexp_by_format[r'{[^()}]+}'] = char_format
-
-        char_format = QTextCharFormat()
-        char_format.setForeground(Qt.gray)
-        self.regexp_by_format[r'[^\\]%.*'] = char_format
-
-        char_format = QTextCharFormat()
-        char_format.setForeground(Qt.darkMagenta)
-        self.regexp_by_format[r'(%CommandsGenerationlatexpython|%Generationlatexpython_Disable|%IncludeDocx|Cell' \
-                              r'|Cell_disable|%CommandsGenerationlatexpython)|%Generationlatexpython' \
-                              r''] = char_format
-
-
-    def highlightBlock(self, text):
-        for regexp, char_format in self.regexp_by_format.items():
-            expression = QRegularExpression(regexp)
-            it = expression.globalMatch(text)
-            while it.hasNext():
-                match = it.next()
-                self.setFormat(match.capturedStart(), match.capturedLength(), char_format)
-
-
-class Error_latex(QMainWindow, Bar):
-    def __init__(self):
-        super(Error_latex, self).__init__()
-        self.error_install_latex()
-
-    def error_install_latex(self):
-        self.msg = QMessageBox()
-        self.msg.setIcon(QMessageBox.Critical)
-        self.msg.setText("Встановить Дистрибутив  Latex!")
-        #self.msg.setInformativeText("Більше інформації!")
-        self.msg.setWindowTitle("Помилка!")
-        self.msg.setDetailedText("Посилання на дистрибутив Texlive: \n https://tug.org/texlive/")
-        self.msg.exec_()
+from distutils.spawn import find_executable # find latex-dist
+import sqlite3 # Database to Tooltip
 
 
 # Initiate Main window
@@ -92,34 +39,53 @@ class Main_windows(QMainWindow, Bar):
         self.setWindowTitle(XML.get_attr_XML('name-title'))
         self.showMaximized()
 
+    # find tip in database
     def on_select(self):
         try:
-            s = ""
-            f = str(self.f_label.textCursor().selectedText())
+            s = "" # to add command in ToolTip
+            f = str(self.f_label.textCursor().selectedText()) # Get Selected Text
+            # Connect database
             conn = sqlite3.connect(os.path.dirname(os.path.abspath(__file__)) + '\\'+'identifier.sqlite')
             cur = conn.cursor()
+            # get all command from database
             cur.execute("select * from name_commands where name = '%s';"% f)
             conn.commit()
             ones = cur.fetchall()
+            # if not find command
             self.f_label.setToolTip("")
+            # Find command
             for one in ones:
+
+                # If select text is command
                 if f == str(one[1]):
+                    # Add name command to Tool
                     s += "<div>" + "<b>Назва команди:</b> <br>" + str(one[1]) + "</div>"
+                    # Find description command
                     cur.execute("select des_text from table_description where id ='%s';" % one[0])
                     des = cur.fetchone()
+
                     if str(des[0]) != "None":
+                        # Add description command to Tool
                         s += "<div>" + "<b>Опис:</b> <br>" + str(des[0]) + "</div>"
+                    # Find parameter command
                     cur.execute("select param from table_parameter where id ='%s';" % one[0])
                     des = cur.fetchone()
+
                     if str(des[0]) != "None":
+                        # Add parameter command to Tool
                         s += "<div>" + "<b>Параметри:</b> <br>" + str(des[0]) + "</div>"
+                    # Find example command
                     cur.execute("select example_text from table_example where id ='%s';" % one[0])
                     des = cur.fetchone()
+
                     if str(des[0]) != "None":
+                        # Add example command to Tool
                         s += "<div>" + "<b>Приклад:</b> <br>" + str(des[0]) + "</div>"
+                    # Output Tip
                     self.f_label.setToolTip(s)
                     break
             conn.close()
+        # If error in database
         except sqlite3.Error as E:
             self.f_label.setToolTip("В базі даних помилка!" + str(E))
 
@@ -128,8 +94,9 @@ class Main_windows(QMainWindow, Bar):
         self.f_label.setFontPointSize(10)
         self.f_label.selectionChanged.connect(self.on_select)
         # open tex-file when open program
+
         if XML.get_osnova_XML('tec-address') != "" and XML.get_osnova_XML('tec-name-file') != "":
-            with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex",
+            with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex","r",
                       encoding='utf-8') as f:
                 self.f_label.setPlainText(f.read())
     # Initiate text_place into main_structure()
@@ -137,6 +104,7 @@ class Main_windows(QMainWindow, Bar):
         self.form_lay = QFormLayout()
         self.form_lay.addRow(self.f_label)
         self.form_frame.setLayout(self.form_lay)
+        # Initiate highlighter text
         highlighter = MyHighlighter(self.f_label.document())
 
     def main_window_splitter(self):

@@ -464,11 +464,10 @@ class Generation_latex(Generation_latex_word):
                 return structure_command
             else:
                 return structure_command + " Формат документа може бути тільки docx"  # Придумать чет по-лучше.
-        elif (name_address.group(0) == "Назва_файлу"):
+        elif name_address.group(0) == "Назва_файлу":
             return structure_command
         else:
             return structure_command + " Такого файлу не існує"
-
 
     def return_many_cells(self, structure_command):
         my = "True"
@@ -562,6 +561,7 @@ class Generation_latex(Generation_latex_word):
                 file_name = "test_table.tex"
             else:
                 file_name = XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + '_enable' + ".tex"
+            print(file_name)
             MyFile = open(file_name, 'w',  encoding='utf-8')
             self.list_start_file = map(lambda x: x + '\n', self.list_start_file)
             MyFile.writelines(self.list_start_file)
