@@ -9,7 +9,7 @@ from PyQt5.Qt import QSyntaxHighlighter, QRegularExpression
 class MyHighlighter(QSyntaxHighlighter):
     def __init__(self, parent):
         super().__init__(parent)
-
+        # Dictionary of special expressions
         self.regexp_by_format = dict()
 
         char_format = QTextCharFormat()

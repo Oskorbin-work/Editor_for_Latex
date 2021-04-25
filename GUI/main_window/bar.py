@@ -11,7 +11,7 @@ import Main_Functions.Generation_latex as latex
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 # -----------------------------------------------------------
-# Other library
+# Few libraries
 # -----------------------------------------------------------
 import os  # To files Address
 
@@ -29,34 +29,30 @@ class Bar:
         self.run_latex_to_pdf_button_bar_disable()
         self.help_button()
 
-    def bar_category_fileMenu(self):  # structure category "File menu". Initiate into main.py!
+    # structure category "File menu".
+    # Initiate into main.py!
+    def bar_category_fileMenu(self):
         #fileMenu = self.menubar.addMenu('&File')
         fileMenu = self.menubar.addMenu(XML.get_attr_XML('file'))
         run = self.menubar.addMenu(XML.get_attr_XML('run'))
         help = self.menubar.addMenu(XML.get_attr_XML('help'))
+
+        # add action to "Файл"
         fileMenu.addAction(self.newAction)
-        run.addAction(self.RunAction)
-        run.addAction(self.RunAction_disable)
-        help.addAction(self.help)
         fileMenu.addAction(self.openAction)
         fileMenu.addAction(self.saveAction)
         fileMenu.addAction(self.saveAsAction)
         fileMenu.addAction(self.exitAction)
 
-    def help_button(self):
-        self.help = QAction(XML.get_attr_XML('help-help'), self)
-        self.help.setShortcut(XML.get_hot_keyboard_XML('help'))
-        self.help.triggered.connect(self.help_pdf)
+        # add action to "Запуск"
+        run.addAction(self.RunAction)
 
-    def help_pdf(self):
-        status = QMessageBox.question(self,"Повідомлення","Ви хочете відкрити довідник по Latex?",QMessageBox.Yes,QMessageBox.No)
-        if (status == QMessageBox.Yes):
-            adress = str(os.path.dirname(os.path.abspath(__file__)))
-            adress = adress.replace('\\','/' )
-            self.main_window_view_pdf_val.load( QUrl("file:///" +adress + "/ukr.pdf"))
+        run.addAction(self.RunAction_disable)
+        # add action to "Допомога"
+        help.addAction(self.help)
 
     # -----------------------------------------------------------
-    # Buttons bar menu category "File"
+    # Buttons bar menu category "Файл"
     def new_button_bar(self):  # Button -- create new file.tex
         self.newAction = QAction(XML.get_attr_XML('file-new'), self)
         self.newAction.setShortcut(XML.get_hot_keyboard_XML('file-new'))
@@ -77,23 +73,39 @@ class Bar:
         self.saveAsAction.setShortcut(XML.get_hot_keyboard_XML('file-save-as'))
         self.saveAsAction.triggered.connect(self.save_file_as)
 
-    def run_latex_to_pdf_button_bar(self):  # Button -- convert current file.tex to file.pdf: tex to pdf
-        self.RunAction = QAction(XML.get_attr_XML('run-enable'), self)
-        self.RunAction.setShortcut(XML.get_hot_keyboard_XML('run-enable'))
-        self.RunAction.triggered.connect(self.run_compile)
-
-    def run_latex_to_pdf_button_bar_disable(self):  # Button -- convert current file.tex to file.pdf: tex to pdf
-        self.RunAction_disable = QAction(XML.get_attr_XML('run-disable'), self)
-        self.RunAction_disable.setShortcut(XML.get_hot_keyboard_XML('run-disable'))
-        self.RunAction_disable.triggered.connect(self.run_compile_disable)
-
     def exit_button_bar(self):  # Button -- exit program
         self.exitAction = QAction(XML.get_attr_XML('file-exit'), self)
         self.exitAction.setShortcut(XML.get_hot_keyboard_XML('file-exit'))
         self.exitAction.triggered.connect(self.close)
 
     # -----------------------------------------------------------
-    # Functional buttons bar menu category "File"
+    # Buttons bar menu category "Запуск"
+
+    # Button -- # convert current file.tex to file.pdf: tex to pdf.
+    # "Запустити-с заміною команд"
+    def run_latex_to_pdf_button_bar(self):
+        self.RunAction = QAction(XML.get_attr_XML('run-enable'), self)
+        self.RunAction.setShortcut(XML.get_hot_keyboard_XML('run-enable'))
+        self.RunAction.triggered.connect(self.run_compile)
+
+    # Button -- # convert current file.tex to file.pdf: tex to pdf.
+    # "Запустити-без заміни заміною команд"
+    def run_latex_to_pdf_button_bar_disable(self):
+        self.RunAction_disable = QAction(XML.get_attr_XML('run-disable'), self)
+        self.RunAction_disable.setShortcut(XML.get_hot_keyboard_XML('run-disable'))
+        self.RunAction_disable.triggered.connect(self.run_compile_disable)
+
+    # -----------------------------------------------------------
+    # Buttons bar menu category "Допомога"
+
+    # Button -- # guide to latex
+    def help_button(self):
+        self.help = QAction(XML.get_attr_XML('help-help'), self)
+        self.help.setShortcut(XML.get_hot_keyboard_XML('help'))
+        self.help.triggered.connect(self.help_pdf)
+
+    # -----------------------------------------------------------
+    # Functional buttons bar menu category "Файл"
     def new_file(self):  # create new file.tex
         status = QMessageBox.question(self,"Новий файл","Ви хочете створити новий файл?",QMessageBox.Yes,QMessageBox.No)
         if (status == QMessageBox.Yes):
@@ -135,7 +147,11 @@ class Bar:
                 my_text = self.f_label.toPlainText()
                 f.write(my_text)
 
-    def run_compile(self):  # convert current file.tex to file.pdf: tex to pdf
+    # -----------------------------------------------------------
+    # Functional buttons bar menu category "Запуск"
+
+    # convert current file.tex to file.pdf: tex to pdf. "Запустити-з заміною команд"
+    def run_compile(self):
         status = QMessageBox.question(self,"Запуск з заміною команд","Ви хочете конвертувати файл tex в pdf?",QMessageBox.Yes,QMessageBox.No)
         if (status == QMessageBox.Yes):
             app = latex.Generation_latex()
@@ -153,7 +169,8 @@ class Bar:
             self.main_window_view_pdf_val.load(QUrl(
                 "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".pdf"))
 
-    def run_compile_disable(self):  # convert current file.tex to file.pdf: tex to pdf
+    # convert current file.tex to file.pdf: tex to pdf. "Запустити-без заміни заміною команд"
+    def run_compile_disable(self):
         status = QMessageBox.question(self,"Запуск без заміни команд","Ви хочете конвертувати файл tex в pdf?",QMessageBox.Yes,QMessageBox.No)
         if (status == QMessageBox.Yes):
             app = latex.Generation_latex()
@@ -171,6 +188,14 @@ class Bar:
                 "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML(
                     'tec-name-file') + '_enable' + ".pdf"))
 
-    # The program is closed by the built-in function
+    # -----------------------------------------------------------
+    # Functional buttons bar menu category "Запуск"
+    def help_pdf(self):
+        status = QMessageBox.question(self,"Повідомлення","Ви хочете відкрити довідник по Latex?",QMessageBox.Yes,QMessageBox.No)
+        if (status == QMessageBox.Yes):
+            adress = str(os.path.dirname(os.path.abspath(__file__)))
+            adress = adress.replace('\\','/' )
+            self.main_window_view_pdf_val.load( QUrl("file:///" +adress + "/ukr.pdf"))
 
+    # The program is closed by the built-in function
     # -----------------------------------------------------------
