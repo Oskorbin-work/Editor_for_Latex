@@ -29,6 +29,19 @@ class Bar:
         self.run_latex_to_pdf_button_bar_disable()
         self.help_button()
 
+    def createStatusBar(self,Ready):
+        # Adding a temporary message
+        if Ready == True:
+            ready_to_work = " || " +"Очікую..." + " || "
+        else:
+            ready_to_work = " || " + "Обробляю..." + " || "
+        if XML.get_osnova_XML('tec-address') != "" and XML.get_osnova_XML('tec-name-file') != "":
+            self.statusbar.showMessage(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file')
+                                       + ".tex" + ready_to_work)
+        else:
+            self.statusbar.showMessage("Зараз без адреси!" + ready_to_work)
+
+
     # structure category "File menu".
     # Initiate into main.py!
     def bar_category_fileMenu(self):
@@ -54,6 +67,7 @@ class Bar:
     # -----------------------------------------------------------
     # Buttons bar menu category "Файл"
     def new_button_bar(self):  # Button -- create new file.tex
+
         self.newAction = QAction(XML.get_attr_XML('file-new'), self)
         self.newAction.setShortcut(XML.get_hot_keyboard_XML('file-new'))
         self.newAction.triggered.connect(self.new_file)
@@ -76,13 +90,14 @@ class Bar:
     def exit_button_bar(self):  # Button -- exit program
         self.exitAction = QAction(XML.get_attr_XML('file-exit'), self)
         self.exitAction.setShortcut(XML.get_hot_keyboard_XML('file-exit'))
-        self.exitAction.triggered.connect(self.close)
+        self.exitAction.triggered.connect(self.exit_program)
 
     # -----------------------------------------------------------
     # Buttons bar menu category "Запуск"
 
     # Button -- # convert current file.tex to file.pdf: tex to pdf.
     # "Запустити-с заміною команд"
+
     def run_latex_to_pdf_button_bar(self):
         self.RunAction = QAction(XML.get_attr_XML('run-enable'), self)
         self.RunAction.setShortcut(XML.get_hot_keyboard_XML('run-enable'))
@@ -107,24 +122,25 @@ class Bar:
     # -----------------------------------------------------------
     # Functional buttons bar menu category "Файл"
     def new_file(self):  # create new file.tex
-        status = QMessageBox.question(self,"Новий файл","Ви хочете створити новий файл?",QMessageBox.Yes,QMessageBox.No)
-        if (status == QMessageBox.Yes):
+        self.createStatusBar(True)
+        status = QMessageBox.question(self,"Новий файл", "Ви хочете створити новий файл?", QMessageBox.Yes,
+                                      QMessageBox.No)
+        if status == QMessageBox.Yes:
             self.save_file()
             self.f_label.setPlainText("")
             XML.change_val_XML('osnova', 'tec-name-file', "")
 
     def open_file(self):  # open file.tex
-        status = QMessageBox.question(self,"Відкрити файл","Ви хочете відкрити файл?",QMessageBox.Yes,QMessageBox.No)
-        if (status == QMessageBox.Yes):
-            file, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "Open file", XML.get_osnova_XML('tec-address'),
-                                                             "Tex files (*.tex)")
-            if not file:
-                return
-            else:
-                XML.change_val_XML('osnova', 'tec-address', os.path.split(file[0])[0])
-                XML.change_val_XML('osnova', 'tec-name-file', os.path.splitext(os.path.basename(file[0]))[0])
-                with open(file[0], encoding='utf-8') as f:
-                    self.f_label.setPlainText(f.read())
+        file, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "Open file", XML.get_osnova_XML('tec-address'),
+                                                         "Tex files (*.tex)")
+        if not file:
+            return
+        else:
+            XML.change_val_XML('osnova', 'tec-address', os.path.split(file[0])[0])
+            XML.change_val_XML('osnova', 'tec-name-file', os.path.splitext(os.path.basename(file[0]))[0])
+            with open(file[0], encoding='utf-8') as f:
+                self.f_label.setPlainText(f.read())
+        self.createStatusBar(True)
 
     def save_file(self):  # save current file.tex
         if os.path.isfile(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex"):
@@ -132,10 +148,13 @@ class Bar:
                   encoding='utf-8') as f:
                 my_text = self.f_label.toPlainText()
                 f.write(my_text)
+            self.createStatusBar(True)
         else:
+            self.createStatusBar(True)
             self.save_file_as()
 
     def save_file_as(self):  # save current file.tex where the user wants
+
         file = QtWidgets.QFileDialog.getSaveFileName(self, "Save file as", XML.get_osnova_XML('tec-address'),
                                                      "Tex files (*.tex)")
         if file[0] == "":
@@ -146,14 +165,21 @@ class Bar:
             with open(file[0], 'w', encoding='utf-8') as f:
                 my_text = self.f_label.toPlainText()
                 f.write(my_text)
-
+        self.createStatusBar(True)
+    # Button -- # exit program
+    def exit_program(self):
+        status = QMessageBox.question(self,"Вихід із програми", "Ви хочете вийти із програми?", QMessageBox.Yes,
+                                      QMessageBox.No)
+        if status == QMessageBox.Yes:
+            self.close()
     # -----------------------------------------------------------
     # Functional buttons bar menu category "Запуск"
 
     # convert current file.tex to file.pdf: tex to pdf. "Запустити-з заміною команд"
     def run_compile(self):
+        self.createStatusBar(False)
         status = QMessageBox.question(self,"Запуск з заміною команд","Ви хочете конвертувати файл tex в pdf?",QMessageBox.Yes,QMessageBox.No)
-        if (status == QMessageBox.Yes):
+        if status == QMessageBox.Yes:
             app = latex.Generation_latex()
             self.save_file()
             app.find_command_to_latex_file(
@@ -168,34 +194,37 @@ class Bar:
             # self.open_file()
             self.main_window_view_pdf_val.load(QUrl(
                 "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".pdf"))
+        self.createStatusBar(True)
 
     # convert current file.tex to file.pdf: tex to pdf. "Запустити-без заміни заміною команд"
     def run_compile_disable(self):
+        self.createStatusBar(False)
         status = QMessageBox.question(self,"Запуск без заміни команд","Ви хочете конвертувати файл tex в pdf?",QMessageBox.Yes,QMessageBox.No)
-        if (status == QMessageBox.Yes):
+        if status == QMessageBox.Yes:
             app = latex.Generation_latex()
             self.save_file()
             app.find_command_to_latex_file(
                 XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", "disable")
             # print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
             os.chdir(XML.get_osnova_XML('tec-address') + '/')
-            os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML(
+            os.system("cmd /c pdflatex -file-line-error -halt-on-error -jobname " + XML.get_osnova_XML(
+                    'tec-name-file') + " " + XML.get_osnova_XML(
                 'tec-name-file') + '_enable' + ".tex")
-            os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML(
+            os.system("cmd /c pdflatex -file-line-error -halt-on-error -jobname " + XML.get_osnova_XML(
+                    'tec-name-file') + " " + XML.get_osnova_XML(
                 'tec-name-file') + '_enable' + ".tex")
             # self.open_file()
             self.main_window_view_pdf_val.load(QUrl(
                 "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML(
-                    'tec-name-file') + '_enable' + ".pdf"))
+                    'tec-name-file') + ".pdf"))
+        self.createStatusBar(True)
 
     # -----------------------------------------------------------
-    # Functional buttons bar menu category "Запуск"
+    # Functional buttons bar menu category "Допомога"
     def help_pdf(self):
-        status = QMessageBox.question(self,"Повідомлення","Ви хочете відкрити довідник по Latex?",QMessageBox.Yes,QMessageBox.No)
-        if (status == QMessageBox.Yes):
-            adress = str(os.path.dirname(os.path.abspath(__file__)))
-            adress = adress.replace('\\','/' )
-            self.main_window_view_pdf_val.load( QUrl("file:///" +adress + "/ukr.pdf"))
+        adress = str(os.path.dirname(os.path.abspath(__file__)))
+        adress = adress.replace('\\', '/')
+        self.main_window_view_pdf_val.load(QUrl("file:///" + adress + "/ukr.pdf"))
 
     # The program is closed by the built-in function
     # -----------------------------------------------------------

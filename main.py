@@ -25,7 +25,9 @@ class Main_windows(QMainWindow, Bar):
 
     def __init__(self):
         super().__init__()
+        self.statusbar = self.statusBar()
         self.bar_category_fileMenu()  # Initiate Bar category fileMenu
+        self.createStatusBar(True)
         # -----------------------------------------------------------
         # Initiate structure Main window
         self.main_structure()
@@ -94,9 +96,8 @@ class Main_windows(QMainWindow, Bar):
         self.f_label.setFontPointSize(10)
         self.f_label.selectionChanged.connect(self.on_select)
         # open tex-file when open program
-
-        if XML.get_osnova_XML('tec-address') != "" and XML.get_osnova_XML('tec-name-file') != "":
-            with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex","r",
+        if os.path.isfile (XML.get_osnova_XML('tec-address')+"/"+XML.get_osnova_XML('tec-name-file') + ".tex"):
+            with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", "r",
                       encoding='utf-8') as f:
                 self.f_label.setPlainText(f.read())
     # Initiate text_place into main_structure()

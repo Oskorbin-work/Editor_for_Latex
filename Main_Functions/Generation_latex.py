@@ -606,7 +606,7 @@ class Generation_latex(Generation_latex_word):
                 for tables in doc.tables:  # Find the table
                     if find_table == True:  # Found a table!
                         break
-                    if (tables.cell(0,0).text == name_table):  # Are looking for
+                    if tables.cell(0,0).text == name_table:  # Are looking for
                         find_table = True
                         # Text processing by spec. Latex symbols
                         if row.isdigit() and column.isdigit() and isinstance(row,float) == False and isinstance(column,float)== False:
