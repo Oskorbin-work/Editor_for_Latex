@@ -19,6 +19,7 @@ import os  # To files Address
 #  In class "Bar" -- menuBar in main program
 class Bar:
     def __init__(self):  # Initiate menuBar
+        self.wcLabel = QLabel(f"Error")
         self.menubar = self.menuBar()
         self.new_button_bar()
         self.open_button_bar()
@@ -31,16 +32,19 @@ class Bar:
 
     def createStatusBar(self,Ready):
         # Adding a temporary message
+        self.statusbar.addWidget(self.wcLabel)
+        self.statusbar.removeWidget(self.wcLabel)
         if Ready == True:
-            ready_to_work = " || " +"Очікую..." + " || "
+            ready_to_work = " || " +"Очікую команди..." + " || "
         else:
-            ready_to_work = " || " + "Обробляю..." + " || "
+            ready_to_work = " || " + "Обробляю команду..." + " || "
         if XML.get_osnova_XML('tec-address') != "" and XML.get_osnova_XML('tec-name-file') != "":
-            self.statusbar.showMessage(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file')
-                                       + ".tex" + ready_to_work)
+            self.wcLabel = QLabel(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file')
+                                  + ".tex" + ready_to_work)
+            self.statusbar.addWidget(self.wcLabel)
         else:
-            self.statusbar.showMessage("Зараз без адреси!" + ready_to_work)
-
+            self.wcLabel = QLabel("Зараз без адреси!" + ready_to_work)
+            self.statusbar.addWidget(self.wcLabel)
 
     # structure category "File menu".
     # Initiate into main.py!
@@ -129,6 +133,8 @@ class Bar:
             self.save_file()
             self.f_label.setPlainText("")
             XML.change_val_XML('osnova', 'tec-name-file', "")
+            self.createStatusBar(True)
+
 
     def open_file(self):  # open file.tex
         file, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "Open file", XML.get_osnova_XML('tec-address'),

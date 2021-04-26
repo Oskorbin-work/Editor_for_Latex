@@ -21,6 +21,10 @@ class MyHighlighter(QSyntaxHighlighter):
         self.regexp_by_format[r'[^\\]%.*'] = char_format
 
         char_format = QTextCharFormat()
+        char_format.setForeground(Qt.gray)
+        self.regexp_by_format[r'^%.*'] = char_format
+
+        char_format = QTextCharFormat()
         char_format.setForeground(Qt.darkCyan)
         self.regexp_by_format[r'\[[^()[^}]+\]'] = char_format
 
@@ -30,8 +34,8 @@ class MyHighlighter(QSyntaxHighlighter):
 
         char_format = QTextCharFormat()
         char_format.setForeground(Qt.darkMagenta)
-        self.regexp_by_format[r'(%CommandsGenerationlatexpython|%Generationlatexpython_Disable|%IncludeDocx|Cell\s*\(' \
-                              r'|Cell_disable\s*\(|%CommandsGenerationlatexpython)|%Generationlatexpython'\
+        self.regexp_by_format[r'(%CommandsGenerationlatexpython|%Generationlatexpython_Disable|%IncludeDocx|Cell\s*(?=\()' \
+                              r'|Cell_disable\s*(?=\()|%CommandsGenerationlatexpython)|%Generationlatexpython'\
                               r''] = char_format
 
     def highlightBlock(self, text):
