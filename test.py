@@ -1,6 +1,6 @@
 # from PyQt5.Qt import QSyntaxHighlighter, QTextCharFormat, QFont, Qt, QRegularExpression, QApplication, QTextEdit
 from PyQt5.Qt import *
-
+import PyQt5
 
 class MyHighlighter(QSyntaxHighlighter):
     def highlightBlock(self, text):
@@ -17,6 +17,7 @@ class MyHighlighter(QSyntaxHighlighter):
 
 
 if __name__ == '__main__':
+    print(PyQt5.__file__)
     app = QApplication([])
 
     mw = QTextEdit()

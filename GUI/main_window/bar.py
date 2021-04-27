@@ -1,15 +1,15 @@
 # -----------------------------------------------------------
 # Codes other files project
 # -----------------------------------------------------------
-from PyQt5.QtCore import QUrl
 
 import data.XML.work_with_XML as XML  # Work with XML-file
 import Main_Functions.Generation_latex as latex
 # -----------------------------------------------------------
 # PyQt 5.Initiate structure Main window and GUI
 # -----------------------------------------------------------
+from PyQt5.QtCore import QUrl
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QLabel,QAction,QMessageBox,QMainWindow
 # -----------------------------------------------------------
 # Few libraries
 # -----------------------------------------------------------
