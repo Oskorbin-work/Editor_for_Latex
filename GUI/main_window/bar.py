@@ -135,8 +135,8 @@ class Bar:
             XML.change_val_XML('osnova', 'tec-name-file', "")
             self.createStatusBar(True)
 
-
     def open_file(self):  # open file.tex
+        self.save_file()
         file, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "Open file", XML.get_osnova_XML('tec-address'),
                                                          "Tex files (*.tex)")
         if not file:
@@ -188,18 +188,22 @@ class Bar:
         if status == QMessageBox.Yes:
             app = latex.Generation_latex()
             self.save_file()
-            app.find_command_to_latex_file(
-                XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", "enable")
-            # print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
-            os.chdir(XML.get_osnova_XML('tec-address') + '/')
-            with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex",
-                      encoding='utf-8') as f:
-                self.f_label.setPlainText(f.read())
-            os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
-            os.system("cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
-            # self.open_file()
-            self.main_window_view_pdf_val.load(QUrl(
-                "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".pdf"))
+            if os.path.isfile(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex"):
+                app.find_command_to_latex_file(
+                    XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", "enable")
+                # print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+                os.chdir(XML.get_osnova_XML('tec-address') + '/')
+                with open(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex",
+                          encoding='utf-8') as f:
+                    self.f_label.setPlainText(f.read())
+                os.system(
+                    "cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+                os.system(
+                    "cmd /c pdflatex -file-line-error -halt-on-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+                # self.open_file()
+                self.main_window_view_pdf_val.load(QUrl(
+                    "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML(
+                        'tec-name-file') + ".pdf"))
         self.createStatusBar(True)
 
     # convert current file.tex to file.pdf: tex to pdf. "Запустити-без заміни заміною команд"
@@ -209,20 +213,21 @@ class Bar:
         if status == QMessageBox.Yes:
             app = latex.Generation_latex()
             self.save_file()
-            app.find_command_to_latex_file(
-                XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", "disable")
-            # print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
-            os.chdir(XML.get_osnova_XML('tec-address') + '/')
-            os.system("cmd /c pdflatex -file-line-error -halt-on-error -jobname " + XML.get_osnova_XML(
+            if os.path.isfile(XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex"):
+                app.find_command_to_latex_file(
+                    XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML('tec-name-file') + ".tex", "disable")
+                # print("cmd /c pdflatex -file-line-error " + XML.get_osnova_XML('tec-name-file') + ".tex")
+                os.chdir(XML.get_osnova_XML('tec-address') + '/')
+                os.system("cmd /c pdflatex -file-line-error -halt-on-error -jobname " + XML.get_osnova_XML(
                     'tec-name-file') + " " + XML.get_osnova_XML(
-                'tec-name-file') + '_enable' + ".tex")
-            os.system("cmd /c pdflatex -file-line-error -halt-on-error -jobname " + XML.get_osnova_XML(
+                    'tec-name-file') + '_enable' + ".tex")
+                os.system("cmd /c pdflatex -file-line-error -halt-on-error -jobname " + XML.get_osnova_XML(
                     'tec-name-file') + " " + XML.get_osnova_XML(
-                'tec-name-file') + '_enable' + ".tex")
-            # self.open_file()
-            self.main_window_view_pdf_val.load(QUrl(
-                "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML(
-                    'tec-name-file') + ".pdf"))
+                    'tec-name-file') + '_enable' + ".tex")
+                # self.open_file()
+                self.main_window_view_pdf_val.load(QUrl(
+                    "file:///" + XML.get_osnova_XML('tec-address') + "/" + XML.get_osnova_XML(
+                        'tec-name-file') + ".pdf"))
         self.createStatusBar(True)
 
     # -----------------------------------------------------------

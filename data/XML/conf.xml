@@ -2,15 +2,15 @@
 <!--name program-->
 <name-title>Editor_latex</name-title>
 <!--File buttons-->
-<file>Файл</file>
+    <file>Файл</file>
 <file-new>Новий файл...</file-new>
 <file-open>Відкрити</file-open>
 <file-save>Зберегти</file-save>
 <file-save-as>Зберегти як</file-save-as>
-<run-enable>Запустити-з заміною команд</run-enable>
+<run-enable>Запустити-с заміною команд</run-enable>
     <run-disable>Запустити-без заміни команд</run-disable>
     <help>Допомога</help>
-        <help-help>Допомога</help-help>
+        <help-help>Відкрити довідник</help-help>
 <file-exit>Вихід</file-exit>
 <run>Запуск</run>
 <!--Exit XML-->

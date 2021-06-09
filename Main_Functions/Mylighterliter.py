@@ -35,7 +35,7 @@ class MyHighlighter(QSyntaxHighlighter):
         char_format = QTextCharFormat()
         char_format.setForeground(Qt.darkMagenta)
         self.regexp_by_format[r'(%CommandsGenerationlatexpython|%Generationlatexpython_Disable|%IncludeDocx|Cell\s*(?=\()' \
-                              r'|Cell_disable\s*(?=\()|%CommandsGenerationlatexpython)|%Generationlatexpython'\
+                              r'|Celldisable\s*(?=\()|%CommandsGenerationlatexpython)|%Generationlatexpython'\
                               r''] = char_format
 
     def highlightBlock(self, text):

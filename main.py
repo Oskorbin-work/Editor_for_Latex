@@ -61,7 +61,7 @@ class Main_windows(QMainWindow, Bar):
                 # If select text is command
                 if f == str(one[1]):
                     # Add name command to Tool
-                    s += "<div>" + "<b>Назва команди:</b> <br>" + str(one[1]) + "</div>"
+                    s += "<div>" + "<b>Назва:</b> <br>" + str(one[1]) + "</div>"
                     # Find description command
                     cur.execute("select des_text from table_description where id ='%s';" % one[0])
                     des = cur.fetchone()

@@ -105,7 +105,7 @@ class Generation_latex_word:
         # Defines the width of the cell in cm
         try:
             a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
-            a = round(a*0.9,1)
+            a = round(a*0.8,1)
         # Default width of the cell in cm -- 1 cm
         except Exception:
             a = 1.0
@@ -304,57 +304,6 @@ class Generation_latex_word:
                 # Добавляем ячейки в таблицу
                 self.list_new_table.append(hhline)
 
-
-class Generation_latex(Generation_latex_word):
-
-    def __init__(self):
-        self.doc = ""
-        self.name_address = ""
-        self.name_table = ""
-        self.list_start_file = list()
-        self.list_new_table = list()
-        self.list_docx_file = list()
-
-    # Determines with whom the cell is merged
-    # For this, an ID of the cell is compiled
-    # It consists of the relationship between the cell and
-    # of its neighboring cells
-    # ID of the pooled cells is the same
-    def merge_cells_word(self, row, column):
-        try:
-            return str(self.name_table.cell(row, column)._tc.top) + str(self.name_table.cell(row, column)._tc.bottom) + \
-                   str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
-        except Exception:
-            # In case the merged cells occur between the lines
-            return str(self.name_table.cell(row, column)._tc.top) + "0707" + \
-               str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
-
-    def paragraphs_alignment_cell(self,row,column):
-        # Defines the width of the cell in cm
-        try:
-            a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
-            a = round(a*0.9,1)
-        # Default width of the cell in cm -- 1 cm
-        except Exception:
-            a = 1.0
-        a_aligment = str(self.name_table.cell(row, column).paragraphs[0].alignment)
-        # If the cell text is on the right side
-        if a_aligment == "RIGHT (2)":
-            return (">{\\raggedleft\\arraybackslash}m{" + str(a) + "cm" + "}")
-        # If the cell text is on the center side
-        elif a_aligment == "CENTER (1)":
-            return (">{\\centering\\arraybackslash}m{" + str(a) + "cm" + "}")
-        # If the cell text is on the left side
-        elif a_aligment == "LEFT (4)":
-            return(">{\\raggedright\\arraybackslash}m{" + str(a) + "cm" + "}")
-        # If the cell text is on the JUSTIFY side
-        elif a_aligment == "JUSTIFY (3)":
-            return ("m{" + str(a) + "cm" + "}")
-        # If the positioning of the text is not determined,
-        # then the text is automatically right
-        else:
-            return (">{\\raggedright\\arraybackslash}m{" + str(a) + "cm" + "}")
-
     # Specifies that the text is bold
     def run_bold(self,string_r,status):
         if status == "True":
@@ -396,6 +345,46 @@ class Generation_latex(Generation_latex_word):
             return "True"
         else:
             return "False"
+
+    # Determines with whom the cell is merged
+    # For this, an ID of the cell is compiled
+    # It consists of the relationship between the cell and
+    # of its neighboring cells
+    # ID of the pooled cells is the same
+    def merge_cells_word(self, row, column):
+        try:
+            return str(self.name_table.cell(row, column)._tc.top) + str(self.name_table.cell(row, column)._tc.bottom) + \
+                   str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
+        except Exception:
+            # In case the merged cells occur between the lines
+            return str(self.name_table.cell(row, column)._tc.top) + "0707" + \
+               str(self.name_table.cell(row, column)._tc.left) + str(self.name_table.cell(row, column)._tc.right)
+
+    def paragraphs_alignment_cell(self,row,column):
+        # Defines the width of the cell in cm
+        try:
+            a = (self.name_table.cell(row, column).width / 914400.0) * 2.54
+            a = round(a*0.8,1)
+        # Default width of the cell in cm -- 1 cm
+        except Exception:
+            a = 1.0
+        a_aligment = str(self.name_table.cell(row, column).paragraphs[0].alignment)
+        # If the cell text is on the right side
+        if a_aligment == "RIGHT (2)":
+            return (">{\\raggedleft\\arraybackslash}m{" + str(a) + "cm" + "}")
+        # If the cell text is on the center side
+        elif a_aligment == "CENTER (1)":
+            return (">{\\centering\\arraybackslash}m{" + str(a) + "cm" + "}")
+        # If the cell text is on the left side
+        elif a_aligment == "LEFT (4)":
+            return(">{\\raggedright\\arraybackslash}m{" + str(a) + "cm" + "}")
+        # If the cell text is on the JUSTIFY side
+        elif a_aligment == "JUSTIFY (3)":
+            return ("m{" + str(a) + "cm" + "}")
+        # If the positioning of the text is not determined,
+        # then the text is automatically right
+        else:
+            return (">{\\raggedright\\arraybackslash}m{" + str(a) + "cm" + "}")
 
     # Specifies that the text is superscript
     # If the text size of the word table is different
@@ -476,6 +465,17 @@ class Generation_latex(Generation_latex_word):
             return a
         else:
             return  self.name_table.cell(row, column).text
+
+
+class Generation_latex(Generation_latex_word):
+
+    def __init__(self):
+        self.doc = ""
+        self.name_address = ""
+        self.name_table = ""
+        self.list_start_file = list()
+        self.list_new_table = list()
+        self.list_docx_file = list()
 
     # Beginning of table
     def commands_to_generation(self, status):
@@ -592,7 +592,7 @@ class Generation_latex(Generation_latex_word):
             column = re.search(r'(?<=,)([\s\S]+?)', column).group(0)
             #print(row + "|" + column)
             #print(column)
-            a = "Cell_disable(" + name_table + "," + row + "," + column + ") - "
+            a = "Celldisable(" + name_table + "," + row + "," + column + ") - "
             table_string = a + " Впишіть назву документа за допомогою команди %IncludeDocx{Назва_файлу}"
             for docx_file in self.list_docx_file:
                 #Find the file
@@ -682,7 +682,8 @@ class Generation_latex(Generation_latex_word):
             MyFile.close()
         else:
             # Pass?
-            print("Файлу нема!")
+            pass
+            #print("Файлу нема!")
 
 
 if __name__ == '__main__':
