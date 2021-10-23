@@ -7,17 +7,15 @@ from Other_Functions.Error_install_latex import * #If latex-dist not installed
 # -----------------------------------------------------------
 # PyQt 5.Initiate structure Main window and GUI
 # -----------------------------------------------------------
-#from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QUrl
-#from PyQt5.QtGui import * $$$$$
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5 import QtWebEngineWidgets
 # -----------------------------------------------------------
 # Other library
 # -----------------------------------------------------------
 import sys # Initiate project into operating system
-from distutils.spawn import find_executable # find latex-dist
 import sqlite3 # Database to Tooltip
+from distutils.spawn import find_executable
 
 
 # Initiate Main window

@@ -2,6 +2,7 @@
 from PyQt5.Qt import *
 import PyQt5
 
+
 class MyHighlighter(QSyntaxHighlighter):
     def highlightBlock(self, text):
         char_format = QTextCharFormat()
@@ -12,7 +13,6 @@ class MyHighlighter(QSyntaxHighlighter):
         it = expression.globalMatch(text)
         while it.hasNext():
             match = it.next()
-            print("fd")
             self.setFormat(match.capturedStart(), match.capturedLength(), char_format)
 
 
